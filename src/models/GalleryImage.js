@@ -1,3 +1,5 @@
+import { getGalleryImagePath } from '../utils/pathUtils';
+
 export class GalleryImage {
   constructor({ path, title, description }) {
     this.path = path
@@ -17,7 +19,7 @@ export class GalleryImage {
         resolve()
       }
       img.onerror = reject
-      img.src = '/gallery/' + this.path
+      img.src = getGalleryImagePath(this.path)
     })
   }
 }

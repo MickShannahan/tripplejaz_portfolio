@@ -1,6 +1,7 @@
 <script setup>
 import { ref } from 'vue';
 import { GalleryImage } from '../models/GalleryImage';
+import { getGalleryImagePath } from '../utils/pathUtils';
 
 const {imgData, position} = defineProps({
   imgData : {type: GalleryImage, required: true},
@@ -15,7 +16,7 @@ const loaded = ref(false)
 
 <template>
 <div class="img-wrapper" :style="`--w: ${imgData.width}px; --h: ${imgData.height}px; --pos: ${position || 1}`">
-  <img loading="lazy" @load="loaded = true" :src="'/gallery/'+imgData.path" :alt="imgData.title"  :class="{loaded}">
+  <img loading="lazy" @load="loaded = true" :src="getGalleryImagePath(imgData.path)" :alt="imgData.title"  :class="{loaded}">
   <!-- <div class="place-holder-box"></div> -->
 </div>
 <div class="modal">
