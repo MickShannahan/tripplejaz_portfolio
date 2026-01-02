@@ -1,7 +1,11 @@
 <script setup>
-import { computed, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import FancyImage from './FancyImage.vue';
 import GalleryModal from './GalleryModal.vue';
+import { Modal } from 'bootstrap';
+import { router } from '../router';
+import { useRoute } from 'vue-router';
+const route = useRoute()
 
 const {galleryImgs, galleryType, rows, columnSize, auto, interval} = defineProps({
   galleryImgs: {type: Array, required: true},
@@ -16,6 +20,43 @@ const intervalMs = computed(() => interval * 1000)
 const colSize = computed(()=> columnSize + 'px')
 const carouselId = ref(`carousel-${Math.random().toString(36).substr(2, 9)}`)
 
+const activeImageData = ref(null)
+
+onMounted(()=>{
+  const params = route.query?.img
+  if(!params) { return}
+  console.log(params)
+  const imageData = galleryImgs.find(i => i.path == params)
+  openActiveModal(imageData)
+})
+
+
+function openActiveModal(imageData){
+  Modal.getOrCreateInstance('#gallery-modal').show()
+  router.push(route.path +'?img='+ imageData.path)
+  activeImageData.value = imageData
+}
+
+function onCloseModal(){
+  Modal.getOrCreateInstance('#gallery-modal').hide()
+  router.push(route.path)
+  setTimeout(()=>  activeImageData.value = null, 200)
+}
+
+function onNextImg(){
+  if(!activeImageData.value) return
+  const currentIndex = galleryImgs.findIndex(img => img.path === activeImageData.value.path)
+  const nextIndex = (currentIndex + 1) % galleryImgs.length
+  openActiveModal(galleryImgs[nextIndex])
+}
+
+function onPrevImg(){
+  if(!activeImageData.value) return
+  const currentIndex = galleryImgs.findIndex(img => img.path === activeImageData.value.path)
+  const prevIndex = (currentIndex - 1 + galleryImgs.length) % galleryImgs.length
+  openActiveModal(galleryImgs[prevIndex])
+}
+
 </script>
 
 
@@ -23,7 +64,7 @@ const carouselId = ref(`carousel-${Math.random().toString(36).substr(2, 9)}`)
 <div class="gallery-box" :class="galleryType">
   <!-- Columns and Grid layouts -->
   <template v-if="galleryType !== 'carousel'">
-    <FancyImage v-for="(imgData, position) in galleryImgs" :imgData="imgData" :position="position"/>
+    <FancyImage v-for="(imgData, position) in galleryImgs" :imgData="imgData" :position="position" @imgClicked="openActiveModal"/>
   </template>
 
   <!-- Carousel layout -->
@@ -46,7 +87,7 @@ const carouselId = ref(`carousel-${Math.random().toString(36).substr(2, 9)}`)
           v-for="(imgData, index) in galleryImgs" 
           :key="index"
           :class="['carousel-item', index === 0 ? 'active' : '']">
-          <FancyImage :imgData="imgData" class="d-block w-100"/>
+          <FancyImage :imgData="imgData" class="d-block w-100" @imgClicked="openActiveModal"/>
         </div>
       </div>
       <button class="carousel-control-prev" type="button" :data-bs-target="`#${carouselId}`" data-bs-slide="prev">
@@ -61,9 +102,7 @@ const carouselId = ref(`carousel-${Math.random().toString(36).substr(2, 9)}`)
   </div>
 </div>
 
-<GalleryModal>
-
-</GalleryModal>
+<GalleryModal :imageData="activeImageData" @closeModal="onCloseModal" @nextImg="onNextImg" @prevImg="onPrevImg"/>
 </template>
 
 
@@ -107,9 +146,13 @@ const carouselId = ref(`carousel-${Math.random().toString(36).substr(2, 9)}`)
   }
 
   .carousel-item {
+    max-height: 800px;
+
     img {
       aspect-ratio: v-bind(aspectRatio);
-      object-fit: cover;
+      object-fit: contain;
+      width: 100%;
+      height: 100%;
     }
   }
 }

@@ -57,7 +57,7 @@ onBeforeUnmount(() => {
 
 .navbar {
   transition: all 0.35s linear;
-  z-index: 1030;
+  // z-index: 1030;
 }
 
 .drop-shadow {

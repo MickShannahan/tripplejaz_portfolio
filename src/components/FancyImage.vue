@@ -7,15 +7,20 @@ const {imgData, position} = defineProps({
   imgData : {type: GalleryImage, required: true},
   position: Number
 })
-defineEmits('nextImg', 'prevImg')
+
+const emit = defineEmits('imgClicked')
 
 const loaded = ref(false)
+
+function setActiveImage(){
+  emit('imgClicked', imgData)
+}
 
 </script>
 
 
 <template>
-<div class="img-wrapper" :style="`--w: ${imgData.width}px; --h: ${imgData.height}px; --pos: ${position || 1}`">
+<div @click="setActiveImage" class="img-wrapper" :style="`--w: ${imgData.width}px; --h: ${imgData.height}px; --pos: ${position || 1}`">
   <img loading="lazy" @load="loaded = true" :src="getGalleryImagePath(imgData.path)" :alt="imgData.title"  :class="{loaded}">
   <!-- <div class="place-holder-box"></div> -->
 </div>

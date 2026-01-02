@@ -54,3 +54,9 @@ small {
 .small-text {
   font-size: .75em;
 }
+
+.modal-backdrop {
+  background-color: rgba(var(--bs-dark-rgb), .8) !important;
+  backdrop-filter: blur(4px) brightness(.5) contrast(.8);
+  opacity: 1 !important;
+}

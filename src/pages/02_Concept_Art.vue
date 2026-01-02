@@ -12,7 +12,8 @@ useHead({
 
 const galleryImgs = [
   new GalleryImage({
-    path: 'concept_art/BaronDauntek_4K.webp'
+    path: 'concept_art/BaronDauntek_4K.webp',
+    description: "this is one bad dude, let me tell  you!"
   }),
   new GalleryImage({
     path: 'concept_art/ColorAndLight-Homework-3-NFowkes-MagicPunk-SelectD-Color.webp'
