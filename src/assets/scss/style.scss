@@ -1,0 +1,56 @@
+@import '_utilities.scss';
+@import '_fonts.scss';
+@import '_main.scss';
+
+body {
+  transition: all .2s ease;
+}
+
+#app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+  font-family: 'Rubik', sans-serif
+}
+
+main {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+#pop-toast-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: end;
+}
+
+a {
+  color: unset;
+  font-weight: 500;
+}
+
+h1 {
+  font-size: calc(calc(3 * 1.2vw) + 1rem);
+}
+
+p {
+  line-height: 1.5em;
+  font-size: 1.5rem;
+  text-align: left;
+}
+
+small {
+  opacity: .8;
+  font-family: "Atkinson Hyperlegible Mono", 'Rubik', sans-serif;
+  font-weight: 500;
+}
+
+.large-text {
+  font-size: 2em;
+}
+
+.small-text {
+  font-size: .75em;
+}
