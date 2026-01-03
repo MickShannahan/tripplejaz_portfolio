@@ -1,6 +1,7 @@
 <script setup>
 import { computed, ref } from 'vue'
 import { router } from '../router'
+import { Offcanvas } from 'bootstrap'
 
 defineProps({
   logo: {
@@ -9,23 +10,13 @@ defineProps({
   }
 })
 
-const offcanvasRef = ref(null)
-const showOffcanvas = ref(false)
 
 const routes = computed(() => {
   return router.getRoutes().filter(route => route.path !== '/:pathMatch(.*)*')
 })
 
 function closeOffcanvas() {
-  showOffcanvas.value = false
-  // Close Bootstrap offcanvas if it exists
-  const offcanvasElement = offcanvasRef.value
-  if (offcanvasElement) {
-    const offcanvas = window.bootstrap?.Offcanvas?.getInstance(offcanvasElement)
-    if (offcanvas) {
-      offcanvas.hide()
-    }
-  }
+  Offcanvas.getOrCreateInstance('#offcanvasNav')?.hide()
 }
 
 function handleNavClick() {
@@ -34,14 +25,11 @@ function handleNavClick() {
 </script>
 
 <template>
-  <nav class="navbar navbar-dark bg-dark fixed-top px-4 py-3">
+  <nav class="d-md-none navbar navbar-dark bg-dark sticky-top px-4 py-2 shadow">
     <div class="container-fluid">
       <!-- Logo -->
       <RouterLink class="navbar-brand d-flex align-items-center" to="/" @click="handleNavClick">
         <img height="45" :src="logo" alt="Logo" class="drop-shadow" />
-        <p class="fs-5 m-0 ms-2 text-primary">
-          TripleJaz
-        </p>
       </RouterLink>
 
       <!-- Hamburger Menu Button -->
@@ -54,8 +42,7 @@ function handleNavClick() {
     <!-- Offcanvas Menu -->
     <div class="offcanvas offcanvas-end bg-dark" tabindex="-1" id="offcanvasNav"
       ref="offcanvasRef" aria-labelledby="offcanvasNavLabel">
-      <div class="offcanvas-header border-bottom border-secondary">
-        <h5 class="offcanvas-title text-white" id="offcanvasNavLabel">Menu</h5>
+      <div class="offcanvas-header">
         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"
           aria-label="Close"></button>
       </div>

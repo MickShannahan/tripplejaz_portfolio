@@ -46,7 +46,7 @@ useHead({
 
 <style lang="scss" scoped>
 .profile-img{
-  width: calc(12em + 5vw);
+  max-width: calc(12em + 5vw);
   border-radius: 40px;
   aspect-ratio: 1/1;
   object-fit: cover;
@@ -54,7 +54,7 @@ useHead({
 }
 
 p{
-  width: calc(60ch + 5vw);
+  max-width: calc(60ch + 5vw);
 }
 
 kbd{
@@ -62,7 +62,7 @@ kbd{
 }
 
 blockquote{
-  width: calc(40ch + 5vw);
+  max-width: calc(40ch + 5vw);
   text-align: center;
 }
 </style>

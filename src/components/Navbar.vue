@@ -10,9 +10,7 @@ import {routes} from '../router'
 <template>
     <DesktopNav :logo="AppState.siteLogo" />
 
-  <div class="d-md-none">
     <MobileNav :logo="AppState.siteLogo" />
-  </div>
 </template>
 
 
