@@ -25,8 +25,10 @@ const activeImageData = ref(null)
 onMounted(()=>{
   const params = route.query?.img
   if(!params) { return}
-  console.log(params)
-  const imageData = galleryImgs.find(i => i.path == params)
+  const cleanParams = params.replaceAll(' ','+')
+  console.log(cleanParams)
+  console.log(galleryImgs)
+  const imageData = galleryImgs.find(i => i.path == cleanParams)
   openActiveModal(imageData)
 })
 

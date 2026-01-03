@@ -18,8 +18,8 @@ function closeModal(){
       
       <div class="d-flex justify-content-between">
         <div>
-          <button @click="emit('prevImg', imageData)" class="btn"><i class="mdi mdi-arrow-left"></i></button>
-          <button @click="emit('nextImg', imageData)" class="btn"><i class="mdi mdi-arrow-right"></i></button>
+          <button @click="emit('prevImg', imageData)" class="btn fs-3"><i class="mdi mdi-arrow-left"></i></button>
+          <button @click="emit('nextImg', imageData)" class="btn fs-3"><i class="mdi mdi-arrow-right"></i></button>
         </div>
         <button class="btn btn-close fs-3" @click="closeModal"></button>
       </div>
