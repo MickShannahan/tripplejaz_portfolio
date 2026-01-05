@@ -13,28 +13,28 @@ useHead({
 
 const galleryImgs = [
   new GalleryImage({
-    path: 'paintings/Fairy+slug_UPDATE.webp'
+    path: 'paintings/Fairy slug_UPDATE.jpg'
   }),
   new GalleryImage({
-    path: 'paintings/Fealty_Small.webp'
+    path: 'paintings/Fealty.jpg'
   }),
   new GalleryImage({
-    path: 'paintings/Flying.webp'
+    path: 'paintings/Flying.jpg'
   }),
   new GalleryImage({
-    path: 'paintings/FlyingMen.webp'
+    path: 'paintings/FlyingMen.jpg'
   }),
   new GalleryImage({
-    path: 'paintings/Globin_Small.webp'
+    path: 'paintings/Globin_Small.jpg'
   }),
   new GalleryImage({
-    path: 'paintings/Machi-SplashKA_FINAL.webp'
+    path: 'paintings/Machi-SplashKA_FINAL.jpg'
   }),
   new GalleryImage({
-    path: 'paintings/MadJak.webp'
+    path: 'paintings/MadJak.jpg'
   }),
   new GalleryImage({
-    path: 'paintings/TavernTrouble_4K-2025.webp'
+    path: 'paintings/TavernTrouble_4K-2025.jpg'
   })
 ]
 

@@ -12,89 +12,89 @@ useHead({
 
 const galleryImgs = [
   new GalleryImage({
-    path: 'concept_art/BaronDauntek_4K.webp',
+    path: 'concept_art/BaronDauntek_4K.png',
     description: "this is one bad dude, let me tell  you!"
   }),
   new GalleryImage({
-    path: 'concept_art/ColorAndLight-Homework-3-NFowkes-MagicPunk-SelectD-Color.webp'
+    path: 'concept_art/creaturesandcharacters-p1-portfolio06.jpg'
   }),
   new GalleryImage({
-    path: 'concept_art/creaturesandcharacters-p1-portfolio06.webp'
+    path: 'concept_art/CreaturesandCharacters-SkinandBones-2-Final.jpg'
   }),
   new GalleryImage({
-    path: 'concept_art/CreaturesandCharacters-SkinandBones-2-Final.webp'
+    path: 'concept_art/Dreglands_Concept.jpg'
   }),
   new GalleryImage({
-    path: 'concept_art/Dreglands_Concept.webp'
+    path: 'concept_art/Imps_ConceptArt_Green.png'
   }),
   new GalleryImage({
-    path: 'concept_art/Imps_ConceptArt_Green.webp'
+    path: 'concept_art/Imps_ConceptArt_Purple.png'
   }),
   new GalleryImage({
-    path: 'concept_art/Imps_ConceptArt_Purple.webp'
+    path: 'concept_art/Imps_ConceptArt_Red.png'
   }),
   new GalleryImage({
-    path: 'concept_art/Imps_ConceptArt_Red.webp'
+    path: 'concept_art/joe-tripplejaz-zavaletta-lol-champ-sheet-page1.jpg'
   }),
   new GalleryImage({
-    path: 'concept_art/LaeOdeHome.webp'
+    path: 'concept_art/joe-tripplejaz-zavaletta-lol-champ-sheet-page2.jpg'
   }),
   new GalleryImage({
-    path: 'concept_art/Laeodians.webp'
+    path: 'concept_art/LaeOdeHome.png'
   }),
   new GalleryImage({
-    path: 'concept_art/Lol-Champ-Sheet-Page1.webp'
+    path: 'concept_art/Laeodians.png'
   }),
   new GalleryImage({
-    path: 'concept_art/Lol-Champ-Sheet-Page2.webp'
+    path: 'concept_art/Machi-CharacterConcept_4K.png'
   }),
   new GalleryImage({
-    path: 'concept_art/Machi-CharacterConcept_4K.webp'
+    path: 'concept_art/MagicPunk-BikeMaker-CharacterDesign-Color.jpg'
   }),
   new GalleryImage({
-    path: 'concept_art/MagicPunk-BikeMakerMagicPunk-SelectD-CharacterDesign-Color.webp'
+    path: 'concept_art/MagicPunk-BikeMaker-Color.jpg'
   }),
   new GalleryImage({
-    path: 'concept_art/MagicPunk_Creature.webp'
+    path: 'concept_art/MagicPunk_Creature.png'
   }),
   new GalleryImage({
-    path: 'concept_art/Mantid_Bow_Portfolio.webp'
+    path: 'concept_art/Mantid_Bow_Portfolio.jpg'
   }),
   new GalleryImage({
-    path: 'concept_art/Mantid_Spear_Portfolio.webp'
+    path: 'concept_art/Mantid_Spear_Portfolio.jpg'
   }),
   new GalleryImage({
-    path: 'concept_art/Mantid_Sword_Portfolio.webp'
+    path: 'concept_art/Mantid_Sword_Portfolio.jpg'
   }),
   new GalleryImage({
-    path: 'concept_art/MP-MachisBike-4K.webp'
+    path: 'concept_art/MP-MachisBike-4K.png'
   }),
   new GalleryImage({
-    path: 'concept_art/MP_Props.webp'
+    path: 'concept_art/MP_Props.png'
   }),
   new GalleryImage({
-    path: 'concept_art/Skarper-Character-Sheet-Final01.webp'
+    path: 'concept_art/Skarper-Character-Sheet-Final01.jpg'
   }),
   new GalleryImage({
-    path: 'concept_art/Skarper-Character-Sheet-Final02-Gun.webp'
+    path: 'concept_art/Skarper-Character-Sheet-Final02-Gun.jpg'
   }),
   new GalleryImage({
-    path: 'concept_art/Skarper-Character-Sheet-Final03-Vehicle.webp'
+    path: 'concept_art/Skarper-Character-Sheet-Final03-Vehicle.jpg'
   }),
   new GalleryImage({
-    path: 'concept_art/TheJex.webp'
+    path: 'concept_art/TheJex.png'
   }),
   new GalleryImage({
-    path: 'concept_art/Wildcallers_Exploration-ColorVariants3.webp'
+    path: 'concept_art/Wildcallers_01.jpg'
   }),
   new GalleryImage({
-    path: 'concept_art/Wildcallers_Exploration-Selects.webp'
+    path: 'concept_art/Wildcallers_02.jpg'
   }),
   new GalleryImage({
-    path: 'concept_art/Wildcallers_Exploration-Thumbs.webp'
+    path: 'concept_art/Wildcallers_03.jpg'
   }),
   new GalleryImage({
-    path: 'concept_art/Wildcallers_Render-Team.webp'
+    path: 'concept_art/Wildcallers_Exploration-043.jpg'
   })
 ]
 

@@ -29,7 +29,7 @@ function closeModal(){
 
         <div class="d-flex flex-grow-1">
           <!-- large image -->
-          <div class="h-100 d-flex justify-content-center align-items-center flex-grow-1">
+          <div class="img-container flex-grow-1">
             <img :src="getGalleryImagePath(imageData.path)" :alt="imageData.title" class="img-fluid p-2">
           </div>
           <!-- image details -->
@@ -62,7 +62,19 @@ function closeModal(){
   backdrop-filter: blur(4px);
 }
 
-.img-fluid{}
+.img-fluid{
+  height: 100%;
+  width: 100%;
+  object-fit: contain;
+  object-position: center;
+}
+
+.img-container{
+  max-height: 94dvh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
 .img-details{
   width: 60ch;
