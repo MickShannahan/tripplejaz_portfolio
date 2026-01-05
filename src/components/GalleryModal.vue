@@ -8,24 +8,16 @@ const {imageData} = defineProps({imageData: GalleryImage})
 const emit = defineEmits('closeModal', 'prevImg', 'nextImg')
 
 const fullImageLoaded = ref(false)
-const thumbnailLoaded = ref(false)
 const blurHashReady = ref(false)
-const manifestLoaded = ref(false)
 
 function closeModal(){
   emit('closeModal')
 }
 
-// Watch for changes to imageData properties
+// Watch for blur hash to become available
 watch(() => imageData?.blurHash, (newHash) => {
   if (newHash) {
     blurHashReady.value = true
-  }
-}, { immediate: true })
-
-watch(() => imageData?.thumbnailPath, (newPath) => {
-  if (newPath) {
-    manifestLoaded.value = true
   }
 }, { immediate: true })
 
@@ -33,14 +25,6 @@ watch(() => imageData?.thumbnailPath, (newPath) => {
 const blurHashImage = computed(() => {
   if (blurHashReady.value && imageData?.blurHash) {
     return decodeBlurHash(imageData.blurHash, 200, 150)
-  }
-  return null
-})
-
-// Get thumbnail or fallback to original
-const thumbnailSrc = computed(() => {
-  if (manifestLoaded.value && imageData?.thumbnailPath) {
-    return getGalleryImagePath(imageData.thumbnailPath)
   }
   return null
 })
@@ -65,41 +49,25 @@ const fullImageSrc = computed(() => {
       </div>
 
       <section class="d-flex align-items-center h-100">
-        <!-- close button -->
 
-        <div class="d-flex flex-grow-1">
           <!-- large image -->
-          <div class="img-container flex-grow-1">
-            <!-- Blur hash placeholder -->
-            <img 
-              v-if="blurHashImage && !fullImageLoaded"
-              :src="blurHashImage"
-              alt="placeholder"
-              class="blur-placeholder"
-              aria-hidden="true"
-            >
-
-            <!-- Thumbnail (shows while full image loads) -->
-            <img 
-              v-if="thumbnailSrc && !fullImageLoaded"
-              @load="thumbnailLoaded = true"
-              :src="thumbnailSrc"
-              :alt="`${imageData.title} thumbnail`"
-              class="thumbnail"
-              :class="{loaded: thumbnailLoaded}"
-            >
-
-            <!-- Full resolution image -->
-            <img 
-              @load="fullImageLoaded = true"
-              :src="fullImageSrc"
-              :alt="imageData.title"
-              class="full-image"
-              :class="{loaded: fullImageLoaded}"
-            >
+          <div class="img-container">
+            <div class="image-wrapper" :style="`aspect-ratio: ${imageData.width} / ${imageData.height}`">
+              <!-- Blur hash placeholder -->
+              <img 
+                v-if="blurHashImage"
+                :src="blurHashImage"
+                alt="placeholder"
+                class="blur-placeholder"
+                aria-hidden="true"
+              >
+              <!-- Full resolution image -->
+              <img @load="fullImageLoaded = true" :src="fullImageSrc" :alt="imageData.title" class="full-img" :class="{loaded: fullImageLoaded}">
+            </div>
           </div>
+
           <!-- image details -->
-          <section class="img-details p-3 " v-if="imageData.title || imageData.description">
+          <!-- <section class="img-details p-3 " v-if="imageData.title || imageData.description">
             <div v-if="imageData.title">
               <b>{{ imageData.title }}</b>
               <hr class="mt-1">
@@ -110,8 +78,7 @@ const fullImageSrc = computed(() => {
             <div v-if="imageData.timestamp">
               <small>{{ imageData.timeStampFormatted }}</small>
             </div>
-          </section>
-        </div>
+          </section> -->
 
       </section>
 
@@ -130,45 +97,50 @@ const fullImageSrc = computed(() => {
 
 .img-container {
   max-height: 94dvh;
+  width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-grow: 1;
+}
+
+.image-wrapper {
   position: relative;
+  height: 94dvh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
   img {
     position: absolute;
     inset: 0;
     width: 100%;
     height: 100%;
-    object-fit: contain;
+    object-fit: cover;
     object-position: center;
-    transition: opacity 0.3s ease;
   }
 
-  // Blur hash placeholder - lowest layer
+  // Blur hash placeholder - shows while full image loads
   .blur-placeholder {
-    filter: blur(4px);
-    opacity: 0.8;
-    z-index: 1;
+    opacity: 1;
   }
 
-  // Thumbnail - middle layer
-  .thumbnail {
+  // Full image - top layer, fades in when loaded
+  .full-img {
     opacity: 0;
-    z-index: 2;
+    transition: opacity 0.3s 1s ease;
+    
     &.loaded {
       opacity: 1;
     }
   }
+}
 
-  // Full image - top layer
-  .full-image {
-    opacity: 0;
-    z-index: 3;
-    &.loaded {
-      opacity: 1;
-    }
-  }
+.img-fluid{
+  height: 100%;
+  width: 100%;
+  object-fit: contain;
+  object-position: center;
 }
 
 .img-details{
