@@ -25,11 +25,13 @@ const activeImageData = ref(null)
 onMounted(()=>{
   const params = route.query?.img
   if(!params) { return}
-  const cleanParams = params.replaceAll(' ','+')
+  const cleanParams = decodeURIComponent(params)
   console.log(cleanParams)
   console.log(galleryImgs)
   const imageData = galleryImgs.find(i => i.path == cleanParams)
-  openActiveModal(imageData)
+  if(imageData) {
+    openActiveModal(imageData)
+  }
 })
 
 
