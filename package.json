@@ -5,7 +5,8 @@
   "scripts": {
     "serve": "vite",
     "build": "vite build",
-    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore"
+    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore",
+    "process-images": "node src/utils/processGalleryImages.js"
   },
   "type": "module",
   "dependencies": {
@@ -13,6 +14,7 @@
     "@popperjs/core": "2.11.8",
     "@unhead/vue": "^2.1.1",
     "@vitejs/plugin-vue": "^6.0.3",
+    "blurhash": "^2.0.5",
     "bootstrap": "5.3.8",
     "marked": "^17.0.1",
     "vue": "3.5.26",
@@ -26,6 +28,7 @@
     "eslint": "8.57.1",
     "eslint-plugin-vue": "^9.18.1",
     "sass": "1.97.1",
+    "sharp": "^0.33.1",
     "vite": "7.3.0"
   }
 }
