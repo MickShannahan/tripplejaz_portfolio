@@ -107,6 +107,7 @@ const fullImageSrc = computed(() => {
 .image-wrapper {
   position: relative;
   height: 94dvh;
+  max-width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -115,7 +116,7 @@ const fullImageSrc = computed(() => {
     position: absolute;
     inset: 0;
     width: 100%;
-    height: 100%;
+    height: auto;
     object-fit: cover;
     object-position: center;
   }
