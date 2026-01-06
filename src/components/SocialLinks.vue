@@ -10,7 +10,7 @@ const socialLinks = AppState.socialLinks
 <template>
 	<div class="links">
 		<span class="mb-2" v-for="{text, link, icon} in socialLinks">
-			<a :href="link" referrerpolicy="no-referrer" rel="noopener" :title="text">
+			<a :href="link" target="_blank" referrerpolicy="no-referrer" rel="noopener" :title="text">
 				<i v-if="icon" class="me-1 mdi" :class="icon"></i>
 				<span>{{ text }}</span>
 			</a>
