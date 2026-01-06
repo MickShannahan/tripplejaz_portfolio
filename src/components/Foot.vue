@@ -17,6 +17,9 @@ import SocialLinks from './SocialLinks.vue';
           <i class="mdi mdi-circle-small"></i>
           <small>Joe Zavaletta</small> 
         </div>
+        <div>
+          <!-- <small>tripplejaz@gmail.com</small> -->
+        </div>
       </div>
       <div class="col-md-7">
         <SocialLinks/>
