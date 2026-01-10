@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import { GalleryImage } from '../models/GalleryImage';
 import { getGalleryImagePath } from '../utils/pathUtils';
 
@@ -12,6 +12,10 @@ const emit = defineEmits('imgClicked')
 
 const thumbLoaded = ref(false)
 const fullLoaded = ref(false)
+
+onMounted(()=>{
+  setTimeout(forceLoadFull, 2000)
+})
 
 function setActiveImage(){
   emit('imgClicked', imgData)
@@ -27,6 +31,17 @@ const fullImagePath = computed(() => {
   return getGalleryImagePath(imgData?.path)
 })
 
+function handleThumbLoaded(){
+  console.log('🖼️thumb loaded', imgData.thumbnailPath)
+  thumbLoaded.value =true
+}
+
+function forceLoadFull(){
+  if(!thumbLoaded.value){
+    console.log('forced load of full res')
+    thumbLoaded.value = true
+  }
+}
 
 
 </script>
@@ -35,7 +50,7 @@ const fullImagePath = computed(() => {
 <template>
 <div @click="setActiveImage" class="img-wrapper" :style="`--w: ${imgData.width}px; --h: ${imgData.height}px; --pos: ${position || 1}`">
 
-  <img  loading="lazy" @load="thumbLoaded = true" :src="thumbnailPath" :alt="imgData.title" class="thumb-img" :class="{thumbLoaded, fullLoaded}" :width="imgData.width" :height="imgData.height">
+  <img  loading="lazy" @load="handleThumbLoaded = true" :src="thumbnailPath" :alt="imgData.title" class="thumb-img" :class="{thumbLoaded, fullLoaded}" :width="imgData.width" :height="imgData.height">
 
   <img v-if="thumbLoaded" loading="lazy" @load="fullLoaded = true" :src="fullImagePath" :alt="imgData.title" class="full-img" :class="{fullLoaded}" :width="imgData.width" :height="imgData.height">
 
