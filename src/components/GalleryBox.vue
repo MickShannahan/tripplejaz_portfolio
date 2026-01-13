@@ -51,14 +51,20 @@ function onNextImg(){
   if(!activeImageData.value) return
   const currentIndex = galleryImgs.findIndex(img => img.path === activeImageData.value.path)
   const nextIndex = (currentIndex + 1) % galleryImgs.length
-  openActiveModal(galleryImgs[nextIndex])
+  activeImageData.value = null
+  setTimeout(()=>{
+    openActiveModal(galleryImgs[nextIndex])
+  }, 200)
 }
 
 function onPrevImg(){
   if(!activeImageData.value) return
   const currentIndex = galleryImgs.findIndex(img => img.path === activeImageData.value.path)
   const prevIndex = (currentIndex - 1 + galleryImgs.length) % galleryImgs.length
-  openActiveModal(galleryImgs[prevIndex])
+  activeImageData.value = null
+ setTimeout(()=>{
+    openActiveModal(galleryImgs[prevIndex])
+  }, 200)
 }
 
 </script>
