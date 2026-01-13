@@ -1,5 +1,5 @@
 <script setup>
-import { computed, ref } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { GalleryImage } from '../models/GalleryImage';
 
 const {imgData} = defineProps({imgData: GalleryImage})
@@ -7,6 +7,13 @@ const emit = defineEmits('closeModal', 'prevImg', 'nextImg')
 
 const thumbLoaded = ref(false)
 const fullLoaded = ref(false)
+
+watch(()=>imgData, ()=>{
+  if( imgData == null){
+    thumbLoaded.value = false
+    fullLoaded.value = false
+  }
+})
 
 function closeModal(){
   emit('closeModal')
@@ -132,7 +139,7 @@ const tallOrWide = computed(()=> imgData.height > imgData.width ? 'tall' : 'wide
     pointer-events: none;
     &.loaded{
       opacity: 0;
-      transition: opacity .2s .5s ease;
+      transition: opacity .2s .4s ease;
     }
   }
 
