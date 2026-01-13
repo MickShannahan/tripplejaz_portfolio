@@ -132,10 +132,14 @@ function onPrevImg(){
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(var(--column-attempt-size), 1fr));
   gap: var(--image-spacing);
-  &>* img{
+  &>*{
     width: 100%;
-    aspect-ratio: v-bind(aspectRatio);
-    object-fit: cover;
+    aspect-ratio: 3/2;
+    img{
+      object-fit: cover;
+      height: 100% !important;
+      width: 100% !important;
+    }
   }
 }
 
