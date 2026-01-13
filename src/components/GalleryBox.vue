@@ -106,7 +106,7 @@ function onPrevImg(){
   </div>
 </div>
 
-<GalleryModal :imageData="activeImageData" @closeModal="onCloseModal" @nextImg="onNextImg" @prevImg="onPrevImg"/>
+<GalleryModal :imgData="activeImageData" @closeModal="onCloseModal" @nextImg="onNextImg" @prevImg="onPrevImg"/>
 </template>
 
 

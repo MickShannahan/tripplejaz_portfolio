@@ -1,49 +1,30 @@
 <script setup>
-import { ref, computed, watch } from 'vue';
+import { ref } from 'vue';
 import { GalleryImage } from '../models/GalleryImage';
-import { getGalleryImagePath } from '../utils/pathUtils';
-import { decodeBlurHash } from '../utils/imageUtils';
 
-const {imageData} = defineProps({imageData: GalleryImage})
+const {imgData} = defineProps({imgData: GalleryImage})
 const emit = defineEmits('closeModal', 'prevImg', 'nextImg')
 
-const fullImageLoaded = ref(false)
-const blurHashReady = ref(false)
+const thumbLoaded = ref(false)
+const fullLoaded = ref(false)
 
 function closeModal(){
   emit('closeModal')
 }
 
-// Watch for blur hash to become available
-watch(() => imageData?.blurHash, (newHash) => {
-  if (newHash) {
-    blurHashReady.value = true
-  }
-}, { immediate: true })
 
-// Compute blurhash placeholder image
-const blurHashImage = computed(() => {
-  if (blurHashReady.value && imageData?.blurHash) {
-    return decodeBlurHash(imageData.blurHash, 200, 150)
-  }
-  return null
-})
-
-const fullImageSrc = computed(() => {
-  return getGalleryImagePath(imageData?.path)
-})
 </script>
 
 
 <template>
 <div class="modal fade" id="gallery-modal" data-bs-scroll="true">
   <div class="modal-dialog modal-fullscreen">
-    <div v-if="imageData" class="modal-content">
+    <div v-if="imgData" class="modal-content">
       
-      <div class="d-flex justify-content-between">
-        <div>
-          <button @click="emit('prevImg', imageData)" class="btn fs-3"><i class="mdi mdi-arrow-left"></i></button>
-          <button @click="emit('nextImg', imageData)" class="btn fs-3"><i class="mdi mdi-arrow-right"></i></button>
+      <div class="d-flex justify-content-end justify-content-md-between">
+        <div class="d-none d-md-block">
+          <button @click="emit('prevImg', imgData)" class="btn fs-3"><i class="mdi mdi-arrow-left"></i></button>
+          <button @click="emit('nextImg', imgData)" class="btn fs-3"><i class="mdi mdi-arrow-right"></i></button>
         </div>
         <button class="btn btn-close fs-3" @click="closeModal"></button>
       </div>
@@ -52,17 +33,17 @@ const fullImageSrc = computed(() => {
 
           <!-- large image -->
           <div class="img-container">
-            <div class="image-wrapper" :style="`aspect-ratio: ${imageData.width} / ${imageData.height}`">
-              <!-- Blur hash placeholder -->
-              <img 
-                v-if="blurHashImage"
-                :src="blurHashImage"
-                alt="placeholder"
-                class="blur-placeholder"
-                aria-hidden="true"
-              >
-              <!-- Full resolution image -->
-              <img @load="fullImageLoaded = true" :src="fullImageSrc" :alt="imageData.title" class="full-img" :class="{loaded: fullImageLoaded}">
+            <div class="img-wrapper" :style="`aspect-ratio: ${imgData.width} / ${imgData.height}`">
+                <img v-if="imgData.blurHash" :width="imgData.width" :height="imgData.height" :src="imgData.blurHash" class="blurry-img">
+
+                <img loading="lazy" @load="thumbLoaded = true" :src="`/gallery/${imgData.thumbnailPath}`" :width="imgData.width" :height="imgData.height" class="thumb-img" :class="{loaded: thumbLoaded}" alt="thumbnail">
+
+                <img v-if="thumbLoaded" @load="fullLoaded = true" loading="lazy" :src="`/gallery/${imgData.path}`" :alt="imgData.title" class="full-img" :class="{loaded: fullLoaded}" :width="imgData.width" :height="imgData.height">
+
+                <!-- loader -->
+                <div v-if="!fullLoaded" class="position-absolute top-0 end-0">
+                  <i class="mdi mdi-loading mdi-spin fs-2"></i>
+                </div>
             </div>
           </div>
 
@@ -81,6 +62,12 @@ const fullImageSrc = computed(() => {
           </section> -->
 
       </section>
+      
+      <div class="d-flex d-md-none justify-content-around">
+          <button @click="emit('prevImg', imgData)" class="btn fs-1"><i class="mdi mdi-arrow-left"></i></button>
+          <button @click="emit('nextImg', imgData)" class="btn fs-1"><i class="mdi mdi-arrow-right"></i></button>
+      </div>
+
 
     </div>
   </div>
@@ -102,38 +89,56 @@ const fullImageSrc = computed(() => {
   justify-content: center;
   align-items: center;
   flex-grow: 1;
+  padding: 1.5rem;
 }
 
-.image-wrapper {
+.img-wrapper{
   position: relative;
-  height: 94dvh;
-  max-width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  overflow: hidden;
+  flex-grow: 1;
 
-  img {
+  
+  img{
+    transition: all .2s ease;
+  }
+  
+  
+  .blurry-img{
+    width: 100%;
+    height: 100%;
     position: absolute;
-    inset: 0;
+    // height: auto;
+    transform: scale(1.1);
+    pointer-events: none;
+  }
+  
+  .thumb-img{
     width: 100%;
     height: auto;
-    object-fit: cover;
-    object-position: center;
-  }
-
-  // Blur hash placeholder - shows while full image loads
-  .blur-placeholder {
-    opacity: 1;
-  }
-
-  // Full image - top layer, fades in when loaded
-  .full-img {
     opacity: 0;
-    transition: opacity 0.3s 1s ease;
-    
-    &.loaded {
+    &.loaded{
+      opacity: 1;
+      transition: all .2s .2s ease;
+    }
+  }
+  
+
+
+  .full-img{
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: all .2s ease;
+    &.loaded{
       opacity: 1;
     }
+  }
+
+  .mdi-load{
+    // trans
   }
 }
 
