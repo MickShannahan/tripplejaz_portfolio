@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import { GalleryImage } from '../models/GalleryImage';
 
 const {imgData} = defineProps({imgData: GalleryImage})
@@ -11,6 +11,8 @@ const fullLoaded = ref(false)
 function closeModal(){
   emit('closeModal')
 }
+
+const tallOrWide = computed(()=> imgData.height > imgData.width ? 'tall' : 'wide')
 
 
 </script>
@@ -33,7 +35,7 @@ function closeModal(){
 
           <!-- large image -->
           <div class="img-container">
-            <div class="img-wrapper" :style="`aspect-ratio: ${imgData.width} / ${imgData.height}`">
+            <div class="img-wrapper" :class="[tallOrWide]" :style="`--aspect-ratio: ${imgData.width} / ${imgData.height}`">
                 <img v-if="imgData.blurHash" :width="imgData.width" :height="imgData.height" :src="imgData.blurHash" class="blurry-img">
 
                 <img loading="lazy" @load="thumbLoaded = true" :src="`/gallery/${imgData.thumbnailPath}`" :width="imgData.width" :height="imgData.height" class="thumb-img" :class="{loaded: thumbLoaded}" alt="thumbnail">
@@ -88,7 +90,6 @@ function closeModal(){
   display: flex;
   justify-content: center;
   align-items: center;
-  flex-grow: 1;
   padding: 1.5rem;
 }
 
@@ -96,42 +97,48 @@ function closeModal(){
   position: relative;
   overflow: hidden;
   flex-grow: 1;
-
-  
-  img{
-    transition: all .2s ease;
+  // max-height: 94dvh;
+  // aspect-ratio: var(--aspect-ratio);
+  &.wide img{
+    width: 100%;
+    height: auto;
+    aspect-ratio: var(--aspect-ratio);
   }
+  &.tall img{
+    height: 94dvh;
+    width: auto;
+    aspect-ratio: var(--aspect-ratio);
+    margin-left: 25%;
+  }
+
   
   
   .blurry-img{
-    width: 100%;
-    height: 100%;
     position: absolute;
+    left: 0;
+    top: 0;
     // height: auto;
-    transform: scale(1.1);
+    // transform: scale(1.1);
     pointer-events: none;
   }
   
   .thumb-img{
-    width: 100%;
-    height: auto;
     opacity: 0;
     &.loaded{
       opacity: 1;
-      transition: all .2s .2s ease;
+      transition: opacity .2s .2s ease;
     }
   }
   
 
 
   .full-img{
+    width: auto;
     position: absolute;
     left: 0;
     top: 0;
-    width: 100%;
-    height: 100%;
     opacity: 0;
-    transition: all .2s ease;
+    transition: opacity .2s ease;
     &.loaded{
       opacity: 1;
     }
