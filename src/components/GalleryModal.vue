@@ -23,12 +23,14 @@ const tallOrWide = computed(()=> imgData.height > imgData.width ? 'tall' : 'wide
   <div class="modal-dialog modal-fullscreen">
     <div v-if="imgData" class="modal-content">
       
-      <div class="d-flex justify-content-end justify-content-md-between">
+      <div class="d-flex justify-content-end justify-content-md-between position-absolute top-0 w-100" style="z-index: 999999;">
         <div class="d-none d-md-block">
-          <button @click="emit('prevImg', imgData)" class="btn fs-3"><i class="mdi mdi-arrow-left"></i></button>
-          <button @click="emit('nextImg', imgData)" class="btn fs-3"><i class="mdi mdi-arrow-right"></i></button>
+          <button @click="emit('prevImg', imgData)" class="btn fs-3 bg-blur rounded"><i class="mdi mdi-arrow-left"></i></button>
+          <button @click="emit('nextImg', imgData)" class="btn fs-3 bg-blur rounded"><i class="mdi mdi-arrow-right"></i></button>
         </div>
-        <button class="btn btn-close fs-3" @click="closeModal"></button>
+        <button class="btn fs-3 bg-blur rounded" @click="closeModal">
+          <i class="mdi mdi-close"></i>
+        </button>
       </div>
 
       <section class="d-flex align-items-center h-100">
@@ -36,7 +38,7 @@ const tallOrWide = computed(()=> imgData.height > imgData.width ? 'tall' : 'wide
           <!-- large image -->
           <div class="img-container">
             <div class="img-wrapper" :class="[tallOrWide]" :style="`--aspect-ratio: ${imgData.width} / ${imgData.height}`">
-                <img v-if="imgData.blurHash" :width="imgData.width" :height="imgData.height" :src="imgData.blurHash" class="blurry-img">
+                <img v-if="imgData.blurHash" :width="imgData.width" :height="imgData.height" :src="imgData.blurHash" class="blurry-img" :class="{loaded: thumbLoaded}">
 
                 <img loading="lazy" @load="thumbLoaded = true" :src="`/gallery/${imgData.thumbnailPath}`" :width="imgData.width" :height="imgData.height" class="thumb-img" :class="{loaded: thumbLoaded}" alt="thumbnail">
 
@@ -102,13 +104,20 @@ const tallOrWide = computed(()=> imgData.height > imgData.width ? 'tall' : 'wide
   &.wide img{
     width: 100%;
     height: auto;
+    max-height: 94dvh;
     aspect-ratio: var(--aspect-ratio);
+    margin-left: 50%;
+    transform: translateX(-50%);
+    object-fit: contain;
   }
   &.tall img{
     height: 94dvh;
     width: auto;
+    max-width: 100%;
     aspect-ratio: var(--aspect-ratio);
-    margin-left: 25%;
+    margin-left: 50%;
+    transform: translateX(-50%);
+    object-fit: contain;
   }
 
   
@@ -117,10 +126,16 @@ const tallOrWide = computed(()=> imgData.height > imgData.width ? 'tall' : 'wide
     position: absolute;
     left: 0;
     top: 0;
+    padding:  0;
     // height: auto;
     // transform: scale(1.1);
     pointer-events: none;
+    &.loaded{
+      opacity: 0;
+      transition: opacity .2s .5s ease;
+    }
   }
+
   
   .thumb-img{
     opacity: 0;
@@ -133,7 +148,6 @@ const tallOrWide = computed(()=> imgData.height > imgData.width ? 'tall' : 'wide
 
 
   .full-img{
-    width: auto;
     position: absolute;
     left: 0;
     top: 0;

@@ -60,3 +60,7 @@ small {
   backdrop-filter: blur(4px) brightness(.5) contrast(.8);
   opacity: 1 !important;
 }
+
+.bg-blur {
+  backdrop-filter: blur(20px) brightness(.8) contrast(.8);
+}
