@@ -25,7 +25,7 @@ import GoogleDriveReader from './GoogleDriveReader.js';
 
 // Determine output directory based on NODE_ENV
 const isDevMode = process.env.NODE_ENV === 'DEV' || process.env.NODE_ENV == 'development';
-const galleryDir = isDevMode ? 'public/gallery' : 'docs/gallery';
+const galleryDir = 'public/gallery'
 const GALLERY_ROOT = path.join(__dirname, `../../${galleryDir}`);
 const MANIFEST_FILE = path.join(GALLERY_ROOT, 'downloadManifest.json');
 
