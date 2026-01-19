@@ -57,6 +57,57 @@ function saveManifest(manifest) {
 }
 
 /**
+ * Recursively find all image files on disk and remove ones not in Google Drive
+ */
+async function cleanupOrphanedFiles(currentGoogleDriveFiles) {
+  const imageExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.webp', '.svg'];
+  const orphanedFiles = [];
+
+  function walkDirectory(dirPath, baseRelativePath = '') {
+    try {
+      const items = fs.readdirSync(dirPath, { withFileTypes: true });
+
+      for (const item of items) {
+        // Skip thumbnail directories
+        if (item.name === '_thumbnails') continue;
+
+        const fullPath = path.join(dirPath, item.name);
+        const relativePath = baseRelativePath ? `${baseRelativePath}/${item.name}` : item.name;
+
+        if (item.isDirectory()) {
+          walkDirectory(fullPath, relativePath);
+        } else if (item.isFile()) {
+          const fileName = item.name.toLowerCase();
+          const isImage = imageExtensions.some(ext => fileName.endsWith(ext));
+
+          if (isImage) {
+            // Check if this file exists in Google Drive
+            if (!currentGoogleDriveFiles.has(relativePath)) {
+              if (!dryRun) {
+                try {
+                  fs.unlinkSync(fullPath);
+                  console.log(`🗑️  Deleted orphaned file: ${relativePath}`);
+                } catch (err) {
+                  console.warn(`⚠️  Could not delete ${relativePath}:`, err.message);
+                }
+              } else {
+                console.log(`📋 [DRY RUN] Would delete: ${relativePath}`);
+              }
+              orphanedFiles.push(relativePath);
+            }
+          }
+        }
+      }
+    } catch (err) {
+      console.warn(`⚠️  Error reading directory ${dirPath}:`, err.message);
+    }
+  }
+
+  walkDirectory(GALLERY_ROOT);
+  return orphanedFiles;
+}
+
+/**
  * Download a single file
  */
 async function downloadFile(reader, fileId, outputPath, fileInfo) {
@@ -139,6 +190,21 @@ export async function downloadGalleryImages() {
       manifest = {};
     }
 
+    // Clean up files on disk that are no longer on Google Drive
+    console.log('🧹 Cleaning up orphaned files...');
+    const currentGoogleDriveFiles = new Set(images.map(img => img.path));
+    const orphanedFiles = await cleanupOrphanedFiles(currentGoogleDriveFiles);
+    
+    // Remove orphaned files from manifest
+    for (const orphanedPath of orphanedFiles) {
+      for (const [fileId, entry] of Object.entries(manifest)) {
+        if (entry.filePath === orphanedPath) {
+          delete manifest[fileId];
+          break;
+        }
+      }
+    }
+
     // Track downloads
     let downloadCount = 0;
     let skippedCount = 0;
@@ -191,33 +257,6 @@ export async function downloadGalleryImages() {
     // Update manifest with new downloads
     manifest = { ...manifest, ...newDownloads };
 
-    // Clean up files no longer on Google Drive
-    let removedCount = 0;
-    const currentFileIds = new Set(images.map(img => img.id));
-
-    for (const fileId of Object.keys(manifest)) {
-      if (!currentFileIds.has(fileId)) {
-        const entry = manifest[fileId];
-        console.log(`🗑️  Removed from manifest: ${entry.filePath} (no longer on Drive)`);
-
-        // Also delete the file from disk
-        if (!dryRun) {
-          const filePath = path.join(GALLERY_ROOT, entry.filePath);
-          try {
-            if (fs.existsSync(filePath)) {
-              fs.unlinkSync(filePath);
-              console.log(`   Deleted file: ${entry.filePath}`);
-            }
-          } catch (error) {
-            console.warn(`   Warning: Could not delete ${entry.filePath}:`, error.message);
-          }
-        }
-
-        delete manifest[fileId];
-        removedCount++;
-      }
-    }
-
     if (!dryRun) {
       saveManifest(manifest);
     }
@@ -229,7 +268,7 @@ export async function downloadGalleryImages() {
     console.log(`✅ Downloaded: ${downloadCount}`);
     console.log(`⏭️  Skipped: ${skippedCount}`);
     console.log(`❌ Failed: ${failedCount}`);
-    console.log(`🗑️ Removed: ${removedCount}`);
+
     console.log(`📦 Total tracked: ${Object.keys(manifest).length}`)
 
     if (dryRun) {
