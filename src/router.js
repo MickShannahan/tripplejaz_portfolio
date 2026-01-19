@@ -5,6 +5,14 @@ import { AppState } from './AppState'
 // Dynamically import all page components and their configs
 const pageModules = import.meta.glob('./pages/[0-9][0-9]_*.vue', { eager: true })
 
+// Create a map of pageConfig to component for efficient lookup
+const configToComponentMap = new Map(
+  Object.entries(pageModules).map(([path, module]) => [
+    module.pageConfig,
+    module.default
+  ])
+)
+
 // Extract page configs and create routes
 const pageConfigs = Object.entries(pageModules)
   .map(([path, module]) => module.pageConfig)
@@ -15,10 +23,7 @@ const pageConfigs = Object.entries(pageModules)
 const routes = pageConfigs.map(pageConfig => ({
   path: pageConfig.routePath === '/' ? '/' : pageConfig.routePath,
   name: pageConfig.name,
-  component: () => import(`./pages/${Object.keys(pageModules).find(path => {
-    const module = pageModules[path]
-    return module.pageConfig === pageConfig
-  }).replace('./pages/', '')}`),
+  component: configToComponentMap.get(pageConfig),
   meta: {
     pageConfig,
     title: pageConfig.title,
