@@ -194,7 +194,7 @@ export async function downloadGalleryImages() {
     console.log('🧹 Cleaning up orphaned files...');
     const currentGoogleDriveFiles = new Set(images.map(img => img.path));
     const orphanedFiles = await cleanupOrphanedFiles(currentGoogleDriveFiles);
-    
+
     // Remove orphaned files from manifest
     for (const orphanedPath of orphanedFiles) {
       for (const [fileId, entry] of Object.entries(manifest)) {
