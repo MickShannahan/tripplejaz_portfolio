@@ -36,6 +36,10 @@ jobs:
 
       - name: Download Drive Images 📥
         working-directory: ./
+        env:
+          GOOGLE_SERVICE_ACCOUNT_EMAIL: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_EMAIL }}
+          GOOGLE_SERVICE_ACCOUNT_KEY: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_KEY }}
+          GOOGLE_DRIVE_ID: ${{ secrets.GOOGLE_DRIVE_ID }}
         run: npm run download-gallery
 
       # Process gallery images to generate thumbnails and blur hashes

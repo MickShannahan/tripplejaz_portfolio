@@ -14,43 +14,17 @@
  *   --dry-run  Show what would be downloaded without actually downloading
  */
 
-// Load .env file if it exists (for local development)
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const envPath = path.resolve(__dirname, '../../.env');
-
-let envLoaded = false;
-if (fs.existsSync(envPath)) {
-  const envContent = fs.readFileSync(envPath, 'utf-8');
-  envContent.split('\n').forEach(line => {
-    // Skip empty lines and comments
-    if (!line || line.startsWith('#')) return;
-
-    // Find the first equals sign
-    const eqIndex = line.indexOf('=');
-    if (eqIndex === -1) return;
-
-    const key = line.substring(0, eqIndex).trim();
-    let value = line.substring(eqIndex + 1).trim();
-
-    // Handle escaped newlines in values
-    value = value.replace(/\\n/g, '\n');
-
-    // Always set from .env (override any system env vars)
-    process.env[key] = value;
-  });
-  envLoaded = true;
-  console.log('📋 Loaded environment variables from .env');
-}
 
 import GoogleDriveReader from './GoogleDriveReader.js';
 
 // Determine output directory based on NODE_ENV
-const isDevMode = process.env.NODE_ENV === 'DEV';
+const isDevMode = process.env.NODE_ENV === 'DEV' || process.env.NODE_ENV == 'development';
 const galleryDir = isDevMode ? 'public/gallery' : 'docs/gallery';
 const GALLERY_ROOT = path.join(__dirname, `../../${galleryDir}`);
 const MANIFEST_FILE = path.join(GALLERY_ROOT, 'downloadManifest.json');
@@ -60,6 +34,7 @@ const args = process.argv.slice(2);
 const forceRedownload = args.includes('--force');
 const dryRun = args.includes('--dry-run');
 
+console.log('env', isDevMode,)
 /**
  * Load existing download manifest to avoid re-downloading
  */
@@ -129,6 +104,7 @@ async function downloadFile(reader, fileId, outputPath, fileInfo) {
       filename: path.basename(outputPath),
       filePath: path.relative(GALLERY_ROOT, outputPath),
       size: fileInfo.size || 0,
+      modifiedTime: fileInfo.modifiedTime,
       downloadedAt: new Date().toISOString()
     };
   } catch (error) {
@@ -176,11 +152,20 @@ export async function downloadGalleryImages() {
       const fileId = image.id;
       const filePath = image.path;
 
-      // Check if already downloaded
+      // Check if already downloaded and unchanged
       if (!forceRedownload && manifest[fileId]) {
-        console.log(`⏭️  Skipped: ${filePath}`);
-        skippedCount++;
-        continue;
+        // Verify file hasn't changed by comparing size and modification time
+        const previousEntry = manifest[fileId];
+        const fileChanged = previousEntry.size !== image.size ||
+          previousEntry.modifiedTime !== image.modifiedTime;
+
+        if (!fileChanged) {
+          console.log(`⏭️  Skipped: ${filePath}`);
+          skippedCount++;
+          continue;
+        } else {
+          console.log(`🔄 Updated: ${filePath} (changed on Drive)`);
+        }
       }
 
       // Prepare output path

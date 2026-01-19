@@ -14,19 +14,33 @@ import crypto from 'crypto';
 class GoogleDriveReader {
   constructor(serviceAccountKey = null, folderId = null) {
     // Load from environment variables if not provided
-    this.folderId = folderId || process.env.GOOGLE_DRIVE_ID || '1rK95EhI4CjhBC0VSbp1i_Ib7gd4p2Unl';
+    this.folderId = folderId || process.env.GOOGLE_DRIVE_ID
 
     // Build service account key from env vars or use provided object
     if (serviceAccountKey) {
       this.serviceAccountKey = serviceAccountKey;
+      console.log('✅ Service account key provided as parameter');
     } else if (process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL && process.env.GOOGLE_SERVICE_ACCOUNT_KEY) {
-      // Handle escaped newlines in environment variables
-      const privateKey = process.env.GOOGLE_SERVICE_ACCOUNT_KEY.replace(/\\n/g, '\n');
+      // Handle both escaped newlines and literal newlines in environment variables
+      let privateKey = process.env.GOOGLE_SERVICE_ACCOUNT_KEY;
+      console.log('📝 Raw key from env (first 50 chars):', privateKey.substring(0, 50));
+      // Replace escaped newlines with actual newlines
+      privateKey = privateKey.replace(/\\n/g, '\n');
+      // Ensure key has proper format with BEGIN/END markers
+      if (!privateKey.includes('BEGIN')) {
+        throw new Error('Invalid private key format: missing BEGIN PRIVATE KEY marker');
+      }
       this.serviceAccountKey = {
         client_email: process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL,
         private_key: privateKey
       };
+      console.log('✅ Service account key loaded from environment');
+      console.log('   Email:', this.serviceAccountKey.client_email);
+      console.log('   Key format OK:', this.serviceAccountKey.private_key.includes('BEGIN'));
     } else {
+      console.log('❌ Missing credentials:');
+      console.log('   GOOGLE_SERVICE_ACCOUNT_EMAIL:', process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL ? '✓ set' : '✗ missing');
+      console.log('   GOOGLE_SERVICE_ACCOUNT_KEY:', process.env.GOOGLE_SERVICE_ACCOUNT_KEY ? '✓ set (length: ' + process.env.GOOGLE_SERVICE_ACCOUNT_KEY.length + ')' : '✗ missing');
       this.serviceAccountKey = null;
     }
 
@@ -100,6 +114,11 @@ class GoogleDriveReader {
       iat: now
     };
 
+    console.log('🔐 Generating JWT with:');
+    console.log('   iss:', this.serviceAccountKey.client_email);
+    console.log('   key type:', typeof this.serviceAccountKey.private_key);
+    console.log('   key exists:', !!this.serviceAccountKey.private_key);
+
     const headerEncoded = this._base64UrlEncode(JSON.stringify(header));
     const payloadEncoded = this._base64UrlEncode(JSON.stringify(payload));
     const signature = this._signData(
@@ -147,6 +166,12 @@ class GoogleDriveReader {
    */
   _signData(data, privateKey) {
     try {
+      if (!privateKey) {
+        throw new Error('Private key is empty or undefined');
+      }
+      if (!privateKey.includes('BEGIN')) {
+        throw new Error('Private key missing BEGIN marker - invalid format');
+      }
       const sign = crypto.createSign('RSA-SHA256');
       sign.update(data);
       const signature = sign.sign(privateKey);
