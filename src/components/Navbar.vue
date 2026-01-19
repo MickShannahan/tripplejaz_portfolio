@@ -4,13 +4,20 @@ import { computed } from 'vue';
 import DesktopNav from './DesktopNav.vue'
 import MobileNav from './MobileNav.vue'
 import { AppState } from '../AppState';
-import {routes} from '../router'
+import { router } from '../router';
+
+const routes = computed(() => {
+  return router.getRoutes()
+    .filter(route => route.meta?.pageConfig && !route.meta.pageConfig.hiddenPage)
+    .sort((a, b) => (a.meta?.pageConfig?.navOrder ?? 999) - (b.meta?.pageConfig?.navOrder ?? 999))
+})
+
 </script>
 
 <template>
-    <DesktopNav :logo="AppState.siteLogo" />
+    <DesktopNav :logo="AppState.siteLogo" :routes />
 
-    <MobileNav :logo="AppState.siteLogo" />
+    <MobileNav :logo="AppState.siteLogo" :routes />
 </template>
 
 

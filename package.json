@@ -6,6 +6,9 @@
     "serve": "vite",
     "build": "vite build",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore",
+    "download-gallery": "node src/utils/downloadGalleryImages.js",
+    "download-gallery:force": "node src/utils/downloadGalleryImages.js --force",
+    "download-gallery:dry": "node src/utils/downloadGalleryImages.js --dry-run",
     "process-images": "node src/utils/processGalleryImages.js"
   },
   "type": "module",

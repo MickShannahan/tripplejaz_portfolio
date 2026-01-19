@@ -1,42 +1,36 @@
+<script>
+import { Page } from '../models/Page'
+
+export const pageConfig = new Page({
+  navOrder: 2,
+  routePath: '/magic-punk',
+  hiddenPage: false,
+  galleryFolder: 'magicpunk',
+  galleryGridClass: 'columns',
+  galleryGridRowWidth: 300,
+  name: 'Magic Punk',
+  title: 'Magic Punk',
+  theme: 'light'
+})
+</script>
+
 <script setup>
-import { useHead } from '@unhead/vue';
 import { AppState } from '../AppState';
 import ButtonLink from '../components/ButtonLink.vue';
 import GalleryBox from '../components/GalleryBox.vue';
 import { GalleryImage } from '../models/GalleryImage';
+import { computed } from 'vue';
 
-useHead({
-  title: AppState.baseSiteTitle + ' | Magic Punk',
-  meta: [{ property: '', content: '' }],
-  htmlAttrs: {'data-bs-theme': 'light'}
+
+const galleryImgs = computed(() => {
+  if (!AppState.galleryManifest?.images) return []
+  
+  const folderPath = `${pageConfig.galleryFolder}/`
+  return AppState.galleryManifest.images
+    .filter(img => img.path.startsWith(folderPath))
+    .map(img => new GalleryImage({ path: img.path }))
 })
 
-
-const galleryImgs = [
-  new GalleryImage({path: 'magic_punk/BaronDauntek_4K.png'}),
-  new GalleryImage({path: 'magic_punk/ColorAndLight-Homework-3-NFowkes-MagicPunk-SelectD-Color.jpg'}),
-  new GalleryImage({path: 'magic_punk/creaturesandcharacters-p1-portfolio06.jpg'}),
-  new GalleryImage({path: 'magic_punk/CreaturesandCharacters-SkinandBones-2-Final.jpg'}),
-  new GalleryImage({path: 'magic_punk/daunteks01.jpg'}),
-  new GalleryImage({path: 'magic_punk/Dreglands_Concept.jpg'}),
-  new GalleryImage({path: 'magic_punk/KeyArt-Mining.png'}),
-  new GalleryImage({path: 'magic_punk/LaeOdeHome.png'}),
-  new GalleryImage({path: 'magic_punk/Laeodians.png'}),
-  new GalleryImage({path: 'magic_punk/Machi-CharacterConcept_4K.png'}),
-  new GalleryImage({path: 'magic_punk/MagicPunk-BikeMakerMagicPunk-SelectD-CharacterDesign-Color.jpg'}),
-  new GalleryImage({path: 'magic_punk/MagicPunk_Creature.png'}),
-  new GalleryImage({path: 'magic_punk/MagicPunk_Vol1_007.png'}),
-  new GalleryImage({path: 'magic_punk/MagicPunk_Vol1_Chapter3_Break_COlor.jpg'}),
-  new GalleryImage({path: 'magic_punk/MP-MachisBike.png'}),
-  new GalleryImage({path: 'magic_punk/MP_Props.png'}),
-  new GalleryImage({path: 'magic_punk/Skarper-Character-Sheet-Final01.jpg'}),
-  new GalleryImage({path: 'magic_punk/Skarper-Character-Sheet-Final02-Gun.jpg'}),
-  new GalleryImage({path: 'magic_punk/Skarper-Character-Sheet-Final03-Vehicle.jpg'}),
-  new GalleryImage({path: 'magic_punk/TavernTrouble.jpg'}),
-  new GalleryImage({path: 'magic_punk/Teep-MagicPunk+Character+Sheet-Update.jpg'}),
-  new GalleryImage({path: 'magic_punk/TheJex.png'}),
-  new GalleryImage({path: 'magic_punk/Wasteland01.jpg'}),
-]
 
 </script>
 
@@ -61,7 +55,7 @@ const galleryImgs = [
       </h2>
     </div>
   </section>
-  <GalleryBox :galleryImgs galleryType="grid" rows="3" aspect-ratio="3/2"/>
+  <GalleryBox :galleryImgs="galleryImgs" :galleryType="pageConfig.galleryGridClass" :columnSize="pageConfig.galleryGridRowWidth" rows="3" aspect-ratio="3/2"/>
 </template>
 
 

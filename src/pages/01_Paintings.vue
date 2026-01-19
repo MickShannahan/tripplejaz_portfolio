@@ -1,54 +1,43 @@
-<script setup>
-import { useHead } from '@unhead/vue';
-import { AppState } from '../AppState';
-import FancyImage from '../components/FancyImage.vue';
-import { GalleryImage } from '../models/GalleryImage';
-import GalleryBox from '../components/GalleryBox.vue';
+<script>
+import { Page } from '../models/Page'
 
-useHead({
-  title: AppState.baseSiteTitle + ' | Paintings',
-  meta: [{ property: '', content: '' }],
-  htmlAttrs: {'data-bs-theme': 'dark'}
+export const pageConfig = new Page({
+  navOrder: 0,
+  routePath: '/',
+  hiddenPage: false,
+  galleryFolder: 'paintings',
+  galleryGridClass: 'columns',
+  galleryGridRowWidth: 300,
+  name: 'Paintings',
+  title: 'Paintings',
+  theme: 'dark'
 })
+</script>
 
-const galleryImgs = [
-  new GalleryImage({
-    path: 'paintings/Fairy slug_UPDATE.jpg'
-  }),
-  new GalleryImage({
-    path: 'paintings/Fealty.jpg'
-  }),
-  new GalleryImage({
-    path: 'paintings/Flying.jpg'
-  }),
-  new GalleryImage({
-    path: 'paintings/FlyingMen.jpg'
-  }),
-  new GalleryImage({
-    path: 'paintings/Globin_Small.jpg'
-  }),
-  new GalleryImage({
-    path: 'paintings/Machi-SplashKA_FINAL.jpg'
-  }),
-  new GalleryImage({
-    path: 'paintings/MadJak.jpg'
-  }),
-  new GalleryImage({
-    path: 'paintings/TavernTrouble_4K-2025.jpg'
-  })
-]
+<script setup>
+import { AppState } from '../AppState';
+import GalleryBox from '../components/GalleryBox.vue';
+import { GalleryImage } from '../models/GalleryImage';
+import { computed } from 'vue';
+
+const galleryFolder = 'paintings'
+const galleryGridClass = 'columns'
+const galleryGridRowWidth = 300
+
+const galleryImgs = computed(() => {
+  if (!AppState.galleryManifest?.images) return []
+  
+  const folderPath = `${galleryFolder}/`
+  return AppState.galleryManifest.images
+    .filter(img => img.path.startsWith(folderPath))
+    .map(img => new GalleryImage(img))
+})
 
 </script>
 
 <template>
-<GalleryBox :galleryImgs galleryType="columns"/>
-
-
+  <GalleryBox :galleryImgs="galleryImgs" :galleryType="galleryGridClass" :columnSize="galleryGridRowWidth" />
 </template>
 
-
-
 <style lang="scss" scoped>
-
-
 </style>

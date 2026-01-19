@@ -16,5 +16,7 @@ export const AppState = reactive({
     { text: 'Art Prints', link: 'https://www.inprnt.com/gallery/tripplejaz/', icon: 'mdi-image-multiple' },
     { text: 'Youtube', link: 'https://www.youtube.com/@tripplejaz', icon: 'mdi-youtube' },
     { text: 'SkillShare', link: 'https://www.skillshare.com/en/referrals/general?teacherRef=473296912&via=teacher-referral-channel&utm_campaign=teacher-referral-channel&utm_source=ShortUrl&utm_medium=teacher-referral-channel&vanityUsername=tripplejaz', icon: 'mdi-school' },
-  ]
+  ],
+  siteRoutes: [],
+  galleryManifest: null
 })

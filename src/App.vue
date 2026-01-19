@@ -10,19 +10,19 @@ const  hideNavbar = computed(() => route.meta?.hideNavbar)
 const  hideFooter = computed(() => route.meta?.hideFooter)
 
 onMounted(()=>{
-loadImageManifest()
+  loadImageManifest()
 })
 
 async function loadImageManifest(){
   try {
-      if (!AppState.manifestCache) {
+      if (!AppState.galleryManifest) {
         const response = await fetch('/gallery/imageManifest.json')
         if (!response.ok) {
           console.warn('Manifest file not found. Run npm run process-images to generate it.')
           return
         }
-        AppState.manifestCache = await response.json()
-        console.log(AppState.manifestCache)
+        AppState.galleryManifest = await response.json()
+        console.log('📦',AppState.galleryManifest)
       }
   } catch (error) {
     // Pop.error("failed to load image manifest")
@@ -31,13 +31,14 @@ async function loadImageManifest(){
   }
 }
 
+
 </script>
 
 <template>
   <Navbar v-if="!hideNavbar" />
 
   <main class="my-5">
-    <router-view v-if="AppState.manifestCache" />
+    <router-view v-if="AppState.galleryManifest" />
   </main>
 
   <Foot v-if="!hideFooter" />

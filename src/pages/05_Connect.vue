@@ -1,13 +1,23 @@
+<script>
+import { Page } from '../models/Page'
+
+export const pageConfig = new Page({
+  navOrder: 4,
+  routePath: '/connect',
+  hiddenPage: false,
+  galleryFolder: '',
+  galleryGridClass: 'columns',
+  galleryGridRowWidth: 300,
+  name: 'Connect',
+  title: 'Connect',
+  theme: 'dark'
+})
+</script>
+
 <script setup>
-import { useHead } from '@unhead/vue';
 import { AppState } from '../AppState';
 import ButtonLink from '../components/ButtonLink.vue';
 
-useHead({
-  title: AppState.baseSiteTitle + ' | Connect',
-  meta: [{ property: '', content: '' }],
-  htmlAttrs: {'data-bs-theme': 'dark'}
-})
 </script>
 
 

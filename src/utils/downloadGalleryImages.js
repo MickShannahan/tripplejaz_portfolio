@@ -1,0 +1,249 @@
+/**
+ * Download Gallery Images from Google Drive
+ * 
+ * Downloads images from your Google Drive folder to docs/gallery/
+ * Useful for CI/CD pipelines and local development
+ * 
+ * Usage:
+ *   npm run download-gallery              # Download new/missing images
+ *   npm run download-gallery:force        # Force re-download all images
+ *   npm run download-gallery:dry          # Dry run (show what would download)
+ * 
+ * Options:
+ *   --force    Force re-download all images (ignore existing files)
+ *   --dry-run  Show what would be downloaded without actually downloading
+ */
+
+// Load .env file if it exists (for local development)
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const envPath = path.resolve(__dirname, '../../.env');
+
+let envLoaded = false;
+if (fs.existsSync(envPath)) {
+  const envContent = fs.readFileSync(envPath, 'utf-8');
+  envContent.split('\n').forEach(line => {
+    // Skip empty lines and comments
+    if (!line || line.startsWith('#')) return;
+
+    // Find the first equals sign
+    const eqIndex = line.indexOf('=');
+    if (eqIndex === -1) return;
+
+    const key = line.substring(0, eqIndex).trim();
+    let value = line.substring(eqIndex + 1).trim();
+
+    // Handle escaped newlines in values
+    value = value.replace(/\\n/g, '\n');
+
+    // Always set from .env (override any system env vars)
+    process.env[key] = value;
+  });
+  envLoaded = true;
+  console.log('📋 Loaded environment variables from .env');
+}
+
+import GoogleDriveReader from './GoogleDriveReader.js';
+
+// Determine output directory based on NODE_ENV
+const isDevMode = process.env.NODE_ENV === 'DEV';
+const galleryDir = isDevMode ? 'public/gallery' : 'docs/gallery';
+const GALLERY_ROOT = path.join(__dirname, `../../${galleryDir}`);
+const MANIFEST_FILE = path.join(GALLERY_ROOT, 'downloadManifest.json');
+
+// Parse command line arguments
+const args = process.argv.slice(2);
+const forceRedownload = args.includes('--force');
+const dryRun = args.includes('--dry-run');
+
+/**
+ * Load existing download manifest to avoid re-downloading
+ */
+function loadManifest() {
+  try {
+    if (fs.existsSync(MANIFEST_FILE)) {
+      return JSON.parse(fs.readFileSync(MANIFEST_FILE, 'utf-8'));
+    }
+  } catch (error) {
+    console.warn('⚠️ Could not load manifest, will download all files');
+  }
+  return {};
+}
+
+/**
+ * Save download manifest
+ */
+function saveManifest(manifest) {
+  fs.writeFileSync(MANIFEST_FILE, JSON.stringify(manifest, null, 2));
+}
+
+/**
+ * Download a single file
+ */
+async function downloadFile(reader, fileId, outputPath, fileInfo) {
+  try {
+    if (!dryRun) {
+      const url = `https://www.googleapis.com/drive/v3/files/${fileId}?alt=media`;
+      const accessToken = await reader.getAccessToken();
+
+      const response = await fetch(url, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`
+        }
+      });
+
+      if (!response.ok) {
+        throw new Error(`Download failed: ${response.status} ${response.statusText}`);
+      }
+
+      // Handle both Node.js and browser fetch APIs
+      let buffer;
+      if (response.buffer) {
+        // Node.js fetch might have buffer method
+        buffer = await response.buffer();
+      } else if (response.arrayBuffer) {
+        // Standard fetch API
+        buffer = await response.arrayBuffer();
+      } else {
+        // Fallback: read as text and convert
+        const data = await response.text();
+        buffer = Buffer.from(data, 'binary');
+      }
+
+      const dir = path.dirname(outputPath);
+
+      // Create directory if it doesn't exist
+      if (!fs.existsSync(dir)) {
+        fs.mkdirSync(dir, { recursive: true });
+      }
+
+      fs.writeFileSync(outputPath, Buffer.from(buffer));
+    }
+
+    return {
+      fileId,
+      filename: path.basename(outputPath),
+      filePath: path.relative(GALLERY_ROOT, outputPath),
+      size: fileInfo.size || 0,
+      downloadedAt: new Date().toISOString()
+    };
+  } catch (error) {
+    console.error(`❌ Failed to download ${fileInfo.name}:`, error.message);
+    throw error;
+  }
+}
+
+/**
+ * Main download function
+ */
+export async function downloadGalleryImages() {
+  try {
+    console.log('🔍 Initializing Google Drive Reader...');
+    const reader = new GoogleDriveReader();
+    console.log('✅ Reader initialized\n');
+
+    console.log('📁 Fetching gallery structure from Google Drive...');
+    const allFiles = await reader.listFiles(reader.folderId, true);
+    console.log(`✅ Found ${allFiles.length} items\n`);
+
+    // Get all image files
+    const images = await reader.getImageFiles();
+    console.log(`🖼️ Found ${images.length} image files\n`);
+    console.log(`📂 Destination: ${isDevMode ? 'public/gallery (DEV mode)' : 'docs/gallery (production)'}\n`);
+
+    // Load existing manifest
+    let manifest = loadManifest();
+
+    if (forceRedownload) {
+      console.log('🔄 Force re-download mode - will download all files\n');
+      manifest = {};
+    }
+
+    // Track downloads
+    let downloadCount = 0;
+    let skippedCount = 0;
+    let failedCount = 0;
+    const newDownloads = {};
+
+    // Download images
+    console.log('📥 Starting downloads...\n');
+
+    for (const image of images) {
+      const fileId = image.id;
+      const filePath = image.path;
+
+      // Check if already downloaded
+      if (!forceRedownload && manifest[fileId]) {
+        console.log(`⏭️  Skipped: ${filePath}`);
+        skippedCount++;
+        continue;
+      }
+
+      // Prepare output path
+      const outputPath = path.join(GALLERY_ROOT, filePath);
+
+      try {
+        if (dryRun) {
+          console.log(`📋 [DRY RUN] Would download: ${filePath}`);
+          const sizeStr = image.size ? ` (${(image.size / 1024 / 1024).toFixed(2)} MB)` : '';
+          console.log(`           Size: ${sizeStr}`);
+        } else {
+          console.log(`⬇️  Downloading: ${filePath}`);
+        }
+
+        const downloadInfo = await downloadFile(reader, fileId, outputPath, image);
+        newDownloads[fileId] = downloadInfo;
+        downloadCount++;
+      } catch (error) {
+        failedCount++;
+      }
+    }
+
+    // Update manifest with new downloads
+    manifest = { ...manifest, ...newDownloads };
+
+    if (!dryRun) {
+      saveManifest(manifest);
+    }
+
+    // Summary
+    console.log('\n' + '='.repeat(50));
+    console.log('📊 Download Summary');
+    console.log('='.repeat(50));
+    console.log(`✅ Downloaded: ${downloadCount}`);
+    console.log(`⏭️  Skipped: ${skippedCount}`);
+    console.log(`❌ Failed: ${failedCount}`);
+    console.log(`📦 Total tracked: ${Object.keys(manifest).length}`);
+
+    if (dryRun) {
+      console.log('\n(This was a DRY RUN - no files were actually downloaded)');
+    }
+
+    console.log(`\n📂 Images saved to: ${GALLERY_ROOT}`);
+    console.log(`📋 Manifest saved to: ${MANIFEST_FILE}`);
+
+    return {
+      downloaded: downloadCount,
+      skipped: skippedCount,
+      failed: failedCount,
+      total: Object.keys(manifest).length
+    };
+  } catch (error) {
+    console.error('❌ Error:', error.message);
+    process.exit(1);
+  }
+}
+
+// Run if called directly
+const currentFileUrl = import.meta.url;
+const isMainModule = process.argv[1] && (currentFileUrl.includes(process.argv[1]) || currentFileUrl.endsWith('downloadGalleryImages.js'));
+
+if (isMainModule) {
+  downloadGalleryImages().catch(console.error);
+}
+
+export default downloadGalleryImages;

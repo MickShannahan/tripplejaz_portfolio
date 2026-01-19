@@ -5,6 +5,7 @@ import GalleryModal from './GalleryModal.vue';
 import { Modal } from 'bootstrap';
 import { router } from '../router';
 import { useRoute } from 'vue-router';
+import { GalleryImage } from '../models/GalleryImage';
 const route = useRoute()
 
 const {galleryImgs, galleryType, rows, columnSize, auto, interval} = defineProps({
@@ -26,7 +27,7 @@ onMounted(()=>{
   const params = route.query?.img
   if(!params) { return}
   const cleanParams = decodeURIComponent(params)
-  console.log(cleanParams)
+  console.log('🫧',cleanParams)
   console.log(galleryImgs)
   const imageData = galleryImgs.find(i => i.path == cleanParams)
   if(imageData) {
@@ -44,7 +45,7 @@ function openActiveModal(imageData){
 function onCloseModal(){
   Modal.getOrCreateInstance('#gallery-modal').hide()
   router.push(route.path)
-  setTimeout(()=>  activeImageData.value = null, 200)
+  setTimeout(()=>  activeImageData.value = null, 100)
 }
 
 function onNextImg(){
@@ -54,7 +55,7 @@ function onNextImg(){
   activeImageData.value = null
   setTimeout(()=>{
     openActiveModal(galleryImgs[nextIndex])
-  }, 200)
+  }, 100)
 }
 
 function onPrevImg(){
@@ -64,7 +65,7 @@ function onPrevImg(){
   activeImageData.value = null
  setTimeout(()=>{
     openActiveModal(galleryImgs[prevIndex])
-  }, 200)
+  }, 100)
 }
 
 </script>

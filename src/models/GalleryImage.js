@@ -4,13 +4,15 @@ import { decodeBlurHash } from '../utils/imageUtils.js';
 let manifestCache = null;
 
 export class GalleryImage {
-  constructor({ path = '', title, description }) {
+  constructor({ path = '', width, height, thumbnailPath, blurHash, title, description }) {
     this.path = path
     this.name = path.slice(path.lastIndexOf('/') + 1)
     this.title = title
     this.description = description || ''
-    this.thumbnailPath
-    this.blurHash
+    this.thumbnailPath = thumbnailPath || null
+    this.blurHash = blurHash || null
+    this.width = width || 0
+    this.height = height || 0
 
     // Initialize both loaders
     this.loadManifestData()
@@ -19,23 +21,23 @@ export class GalleryImage {
   /**
    * Load blur hash and thumbnail path from manifest
    */
-  async loadManifestData() {
+  loadManifestData() {
     try {
-      // Load manifest once and cache it
-      if (!AppState.manifestCache) {
-        const response = await fetch('/gallery/imageManifest.json')
-        if (!response.ok) {
-          console.warn('Manifest file not found. Run npm run process-images to generate it.')
-          return
-        }
-        AppState.manifestCache = await response.json()
-      } else {
-        console.log('cache already loaded')
-      }
+      // // Load manifest once and cache it
+      // if (!AppState.manifestCache) {
+      //   const response = await fetch('/gallery/imageManifest.json')
+      //   if (!response.ok) {
+      //     console.warn('Manifest file not found. Run npm run process-images to generate it.')
+      //     return
+      //   }
+      //   AppState.manifestCache = await response.json()
+      // } else {
+      //   // console.log('cache already loaded')
+      // }
 
 
       // Find this image in manifest
-      const imageData = AppState.manifestCache.images.find(img => img.path === this.path)
+      const imageData = AppState.galleryManifest.images.find(img => img.path === this.path)
       if (imageData) {
         this.height = imageData.height
         this.width = imageData.width
@@ -45,7 +47,7 @@ export class GalleryImage {
           Math.round(imageData.height / 100)
         )
         this.thumbnailPath = imageData.thumbnailPath
-        console.log(this.blurHash, this.thumbnailPath)
+        // console.log(this.blurHash, this.thumbnailPath)
         // Override dimensions from manifest if available
         if (imageData.width) this.width = imageData.width
         if (imageData.height) this.height = imageData.height

@@ -14,10 +14,6 @@ const thumbLoaded = ref(false)
 const fullLoaded = ref(false)
 
 
-onMounted(()=>{
-  console.log('🥒', imgData.blurHash)
-})
-
 function setActiveImage(){
   emit('imgClicked', imgData)
 }
@@ -62,7 +58,7 @@ function setActiveImage(){
     position: absolute;
     // height: auto;
     transform: scale(1.1) translateY(102%);
-    animation: slide-in .2s calc(.025s * var(--pos)) ease forwards;
+    animation: slide-in .2s calc( .025s * var(--pos)) ease forwards;
     pointer-events: none;
   }
   

@@ -1,60 +1,49 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
-import { AppState } from './AppState.js'
+import { useHead } from '@unhead/vue'
+import { AppState } from './AppState'
 
-function loadPage(page) {
-  return () => import(`./pages/${page}`)
-}
+// Dynamically import all page components and their configs
+const pageModules = import.meta.glob('./pages/[0-9][0-9]_*.vue', { eager: true })
 
-function generateRoutes() {
-  const pages = import.meta.glob('./pages/*.vue', { eager: true })
-  const routes = []
-  const routeEntries = []
+// Extract page configs and create routes
+const pageConfigs = Object.entries(pageModules)
+  .map(([path, module]) => module.pageConfig)
+  .filter(config => config && !config.hiddenPage)
+  .sort((a, b) => a.navOrder - b.navOrder)
 
-  for (const path in pages) {
-    const filename = path.match(/\/pages\/(.+)\.vue$/)[1]
-
-    // Extract number prefix if exists (e.g., "01_Paintings" or "01-Paintings" -> number: 1, name: "Paintings")
-    const numberMatch = filename.match(/^(\d+)[-_](.+)$/)
-    const number = numberMatch ? parseInt(numberMatch[1]) : Infinity
-    const cleanName = numberMatch ? numberMatch[2] : filename
-
-    routeEntries.push({
-      filename,
-      cleanName,
-      number,
-      path,
-      component: pages[path].default
-    })
+// Build routes from page configs
+const routes = pageConfigs.map(pageConfig => ({
+  path: pageConfig.routePath === '/' ? '/' : pageConfig.routePath,
+  name: pageConfig.name,
+  component: () => import(`./pages/${Object.keys(pageModules).find(path => {
+    const module = pageModules[path]
+    return module.pageConfig === pageConfig
+  }).replace('./pages/', '')}`),
+  meta: {
+    pageConfig,
+    title: pageConfig.title,
+    theme: pageConfig.theme
   }
-
-  // Sort by number (if present), then by original order
-  routeEntries.sort((a, b) => a.number - b.number)
-
-  // Create route objects
-  for (const entry of routeEntries) {
-    // Replace underscores with spaces for display name
-    const displayName = entry.cleanName.replace(/_/g, ' ')
-    // Replace underscores with dashes for URL path
-    const pathName = entry.cleanName.replace(/_/g, '-').toLowerCase()
-    const routePath = entry.cleanName === AppState.landingPage ? '/' : `/${pathName}`
-    const routeName = displayName
-
-    routes.push({
-      path: routePath,
-      name: routeName,
-      component: entry.component
-    })
-  }
-  console.log(routes)
-
-  return routes
-}
-
-export const routes = generateRoutes()
+}))
 
 export const router = createRouter({
   linkActiveClass: 'router-link-active',
   linkExactActiveClass: 'router-link-exact-active',
   history: createWebHashHistory(),
   routes
+})
+
+// Handle head updates on route change
+router.beforeEach((to, from, next) => {
+  const pageConfig = to.meta?.pageConfig
+
+  if (pageConfig) {
+    useHead({
+      title: pageConfig.getFullTitle(AppState.baseSiteTitle),
+      meta: [{ property: '', content: '' }],
+      htmlAttrs: { 'data-bs-theme': pageConfig.theme }
+    })
+  }
+
+  next()
 })

@@ -2,24 +2,25 @@
 import { computed, ref, watch } from 'vue';
 import { GalleryImage } from '../models/GalleryImage';
 
-const {imgData} = defineProps({imgData: GalleryImage})
+const props = defineProps({imgData: GalleryImage})
 const emit = defineEmits('closeModal', 'prevImg', 'nextImg')
 
 const thumbLoaded = ref(false)
 const fullLoaded = ref(false)
 
-watch(()=>imgData, ()=>{
-  if( imgData == null){
+watch(()=>props.imgData, (pData)=>{
+  console.log('  👉👉',pData.blurHash)
+  if( pData == null){
     thumbLoaded.value = false
     fullLoaded.value = false
   }
-})
+}, {deep: true})
 
 function closeModal(){
   emit('closeModal')
 }
 
-const tallOrWide = computed(()=> imgData.height > imgData.width ? 'tall' : 'wide')
+const tallOrWide = computed(()=> props.imgData.height > props.imgData.width ? 'tall' : 'wide')
 
 
 </script>

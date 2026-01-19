@@ -6,6 +6,10 @@ defineProps({
   logo: {
     type: String,
     required: true
+  },
+  routes: {
+    type: Array,
+    required: true
   }
 })
 
@@ -14,10 +18,6 @@ const scrolled = ref(window.scrollY > 100)
 function onScroll() {
   scrolled.value = window.scrollY > 100
 }
-
-const routes = computed(() => {
-  return router.getRoutes().filter(route => route.path !== '/:pathMatch(.*)*')
-})
 
 onMounted(() => {
   window.addEventListener('scroll', onScroll)
@@ -43,7 +43,7 @@ onBeforeUnmount(() => {
         <ul class="navbar-nav d-flex flex-row flex-wrap justify-content-center">
           <li class="nav-item" v-for="route in routes" :key="route.name">
             <RouterLink class="nav-link text-lowercase " :to="route.path">
-              {{ route.name }}
+              {{ route.meta?.pageConfig?.name || route.name }}
             </RouterLink>
           </li>
         </ul>

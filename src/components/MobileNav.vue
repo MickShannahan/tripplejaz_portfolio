@@ -7,12 +7,11 @@ defineProps({
   logo: {
     type: String,
     required: true
+  },
+  routes: {
+    type: Array,
+    required: true
   }
-})
-
-
-const routes = computed(() => {
-  return router.getRoutes().filter(route => route.path !== '/:pathMatch(.*)*')
 })
 
 function closeOffcanvas() {
@@ -52,7 +51,7 @@ function handleNavClick() {
           <li class="nav-item text-center" v-for="route in routes" :key="route.name">
             <RouterLink class="nav-link text-uppercase fs-5 fw-bold text-white"
               :to="route.path" @click="handleNavClick">
-              {{ route.name }}
+              {{ route.meta?.pageConfig?.name || route.name }}
             </RouterLink>
           </li>
         </ul>

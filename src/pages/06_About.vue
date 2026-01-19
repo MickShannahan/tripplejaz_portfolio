@@ -1,12 +1,22 @@
+<script>
+import { Page } from '../models/Page'
+
+export const pageConfig = new Page({
+  navOrder: 5,
+  routePath: '/about',
+  hiddenPage: false,
+  galleryFolder: '',
+  galleryGridClass: 'columns',
+  galleryGridRowWidth: 300,
+  name: 'About',
+  title: 'About',
+  theme: 'light'
+})
+</script>
+
 <script setup>
-import { useHead } from '@unhead/vue';
 import { AppState } from '../AppState';
 
-useHead({
-  title: AppState.baseSiteTitle + ' | About',
-  meta: [{ property: '', content: '' }],
-  htmlAttrs: {'data-bs-theme': 'light'}
-})
 </script>
 
 

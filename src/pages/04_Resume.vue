@@ -1,13 +1,34 @@
+<script>
+import { Page } from '../models/Page'
+
+export const pageConfig = new Page({
+  navOrder: 3,
+  routePath: '/resume',
+  hiddenPage: false,
+  galleryFolder: 'resume',
+  galleryGridClass: 'columns',
+  galleryGridRowWidth: 300,
+  name: 'Resume',
+  title: 'Resume',
+  theme: 'dark'
+})
+</script>
+
 <script setup>
-import { useHead } from '@unhead/vue';
 import { AppState } from '../AppState';
 import ButtonLink from '../components/ButtonLink.vue';
 import GalleryBox from '../components/GalleryBox.vue';
 import { GalleryImage } from '../models/GalleryImage';
+import { computed } from 'vue';
 
-useHead({
-  title: AppState.baseSiteTitle + ' | Resume',
-  meta: [{ property: '', content: '' }]
+
+const galleryImgs = computed(() => {
+  if (!AppState.galleryManifest?.images) return []
+  
+  const folderPath = `${pageConfig.galleryFolder}/`
+  return AppState.galleryManifest.images
+    .filter(img => img.path.startsWith(folderPath))
+    .map(img => new GalleryImage({ path: img.path }))
 })
 
 const riotImgs = [
@@ -17,6 +38,8 @@ const riotImgs = [
   new GalleryImage({path: 'resume/riot_games/slice3.webp'}),
   new GalleryImage({path: 'resume/riot_games/slice4.webp'})
 ]
+
+console.log(riotImgs)
 
 const segaImgs = [
   new GalleryImage({path: 'resume/sega_forever/Sonic1-final.webp'}),
