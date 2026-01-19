@@ -34,6 +34,10 @@ jobs:
         working-directory: ./ # Specify the folder where the app code resides (./client for fullstack applications).
         run: npm ci # Clean install of the project's dependencies.
 
+      - name: Download Drive Images 📥
+        working-directory: ./
+        run: npm run download-gallery
+
       # Process gallery images to generate thumbnails and blur hashes
       - name: Process Gallery Images 🖼️
         working-directory: ./
