@@ -191,6 +191,33 @@ export async function downloadGalleryImages() {
     // Update manifest with new downloads
     manifest = { ...manifest, ...newDownloads };
 
+    // Clean up files no longer on Google Drive
+    let removedCount = 0;
+    const currentFileIds = new Set(images.map(img => img.id));
+
+    for (const fileId of Object.keys(manifest)) {
+      if (!currentFileIds.has(fileId)) {
+        const entry = manifest[fileId];
+        console.log(`🗑️  Removed from manifest: ${entry.filePath} (no longer on Drive)`);
+
+        // Also delete the file from disk
+        if (!dryRun) {
+          const filePath = path.join(GALLERY_ROOT, entry.filePath);
+          try {
+            if (fs.existsSync(filePath)) {
+              fs.unlinkSync(filePath);
+              console.log(`   Deleted file: ${entry.filePath}`);
+            }
+          } catch (error) {
+            console.warn(`   Warning: Could not delete ${entry.filePath}:`, error.message);
+          }
+        }
+
+        delete manifest[fileId];
+        removedCount++;
+      }
+    }
+
     if (!dryRun) {
       saveManifest(manifest);
     }
@@ -202,7 +229,8 @@ export async function downloadGalleryImages() {
     console.log(`✅ Downloaded: ${downloadCount}`);
     console.log(`⏭️  Skipped: ${skippedCount}`);
     console.log(`❌ Failed: ${failedCount}`);
-    console.log(`📦 Total tracked: ${Object.keys(manifest).length}`);
+    console.log(`🗑️ Removed: ${removedCount}`);
+    console.log(`📦 Total tracked: ${Object.keys(manifest).length}`)
 
     if (dryRun) {
       console.log('\n(This was a DRY RUN - no files were actually downloaded)');
