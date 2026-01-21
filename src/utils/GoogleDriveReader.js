@@ -372,6 +372,7 @@ class GoogleDriveReader {
   }
 
   /**
+  /**
    * Filter and flatten image files from nested structure
    * @private
    */
@@ -393,6 +394,41 @@ class GoogleDriveReader {
 
     traverse(files);
     return images;
+  }
+
+  /**
+   * Get a flat list of all synced files (images + txt)
+   * @returns {Promise<Array>} Array of file objects
+   */
+  async getSyncedFiles() {
+    const syncedExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.webp', '.svg', '.txt'];
+    const allFiles = await this.listFiles(this.folderId, true);
+
+    return this._filterSyncedFiles(allFiles, syncedExtensions);
+  }
+
+  /**
+   * Filter and flatten synced files from nested structure
+   * @private
+   */
+  _filterSyncedFiles(files, syncedExtensions) {
+    const syncedFiles = [];
+
+    const traverse = (items) => {
+      for (const item of items) {
+        if (item.isFolder && item.children) {
+          traverse(item.children);
+        } else if (!item.isFolder) {
+          const fileName = item.name.toLowerCase();
+          if (syncedExtensions.some(ext => fileName.endsWith(ext))) {
+            syncedFiles.push(item);
+          }
+        }
+      }
+    };
+
+    traverse(files);
+    return syncedFiles;
   }
 }
 

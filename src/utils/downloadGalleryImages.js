@@ -61,7 +61,7 @@ function saveManifest(manifest) {
  * Only processes folders that exist in Google Drive
  */
 async function cleanupOrphanedFiles(currentGoogleDriveFiles, allGoogleDriveFiles) {
-  const imageExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.webp', '.svg'];
+  const syncedExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.webp', '.svg', '.txt'];
   const orphanedFiles = [];
 
   // Extract top-level folder names from Google Drive
@@ -94,9 +94,9 @@ async function cleanupOrphanedFiles(currentGoogleDriveFiles, allGoogleDriveFiles
           // Skip directories not in Google Drive (like 'resume')
         } else if (item.isFile()) {
           const fileName = item.name.toLowerCase();
-          const isImage = imageExtensions.some(ext => fileName.endsWith(ext));
+          const isSyncedFile = syncedExtensions.some(ext => fileName.endsWith(ext));
 
-          if (isImage) {
+          if (isSyncedFile) {
             // Check if this file exists in Google Drive
             if (!currentGoogleDriveFiles.has(relativePath)) {
               if (!dryRun) {
@@ -193,9 +193,9 @@ export async function downloadGalleryImages() {
     const allFiles = await reader.listFiles(reader.folderId, true);
     console.log(`✅ Found ${allFiles.length} items\n`);
 
-    // Get all image files
-    const images = await reader.getImageFiles();
-    console.log(`🖼️ Found ${images.length} image files\n`);
+    // Get all synced files (images + txt)
+    const images = await reader.getSyncedFiles();
+    console.log(`🖼️ Found ${images.length} synced files\n`);
     console.log(`📂 Destination: ${isDevMode ? 'public/gallery (DEV mode)' : 'docs/gallery (production)'}\n`);
 
     // Load existing manifest
