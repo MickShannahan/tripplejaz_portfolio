@@ -1,6 +1,6 @@
 {
-  "generated": "2026-01-21T05:47:32.142Z",
-  "totalImages": 69,
+  "generated": "2026-01-21T06:20:33.576Z",
+  "totalImages": 70,
   "images": [
     {
       "path": "concept art/0_Machi-CharacterConcept_4K.png",
@@ -274,6 +274,13 @@
       "blurHash": "LdEMhDD%Wusk?dM{RkoHnkt6Mxax",
       "width": 2295,
       "height": 3195
+    },
+    {
+      "path": "paintings/Machi-SplashKA_FINAL.jpg",
+      "thumbnailPath": "_thumbnails/paintings/Machi-SplashKA_FINAL.webp",
+      "blurHash": "LLE.3W}*xEInE4EK,-wuNfOrNztm",
+      "width": 3840,
+      "height": 2160
     },
     {
       "path": "paintings/MadJak.jpg",

@@ -73,6 +73,7 @@ async function cleanupOrphanedFiles(currentGoogleDriveFiles, allGoogleDriveFiles
   }
 
   console.log(`📂 Google Drive folders to sync: ${Array.from(googleDriveFolders).join(', ')}`);
+  console.log(`📊 Files in Google Drive to preserve: ${currentGoogleDriveFiles.size}`);
 
   function walkDirectory(dirPath, baseRelativePath = '') {
     try {
@@ -86,9 +87,11 @@ async function cleanupOrphanedFiles(currentGoogleDriveFiles, allGoogleDriveFiles
         const relativePath = baseRelativePath ? `${baseRelativePath}/${item.name}` : item.name;
 
         if (item.isDirectory()) {
-          // Only process directories that are in Google Drive
+          // Only process directories that are in Google Drive (top level only)
           const topLevelFolder = baseRelativePath || item.name;
-          if (googleDriveFolders.has(topLevelFolder)) {
+          const topLevelFolderName = topLevelFolder.split('/')[0]; // Get the first folder name
+          
+          if (googleDriveFolders.has(topLevelFolderName)) {
             walkDirectory(fullPath, relativePath);
           }
           // Skip directories not in Google Drive (like 'resume')
@@ -99,15 +102,16 @@ async function cleanupOrphanedFiles(currentGoogleDriveFiles, allGoogleDriveFiles
           if (isSyncedFile) {
             // Check if this file exists in Google Drive
             if (!currentGoogleDriveFiles.has(relativePath)) {
+              console.log(`   ❓ File not found in Google Drive: ${relativePath}`);
               if (!dryRun) {
                 try {
                   fs.unlinkSync(fullPath);
-                  console.log(`🗑️  Deleted orphaned file: ${relativePath}`);
+                  console.log(`   🗑️  Deleted: ${relativePath}`);
                 } catch (err) {
-                  console.warn(`⚠️  Could not delete ${relativePath}:`, err.message);
+                  console.warn(`   ⚠️  Could not delete ${relativePath}:`, err.message);
                 }
               } else {
-                console.log(`📋 [DRY RUN] Would delete: ${relativePath}`);
+                console.log(`   📋 [DRY RUN] Would delete: ${relativePath}`);
               }
               orphanedFiles.push(relativePath);
             }
