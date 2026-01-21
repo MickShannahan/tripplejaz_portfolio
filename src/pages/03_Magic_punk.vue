@@ -23,12 +23,11 @@ import { computed } from 'vue';
 
 
 const galleryImgs = computed(() => {
-  if (!AppState.galleryManifest?.images) return []
+  if (!AppState.galleryManifest) return []
   
   const folderPath = `${pageConfig.galleryFolder}/`
-  return AppState.galleryManifest.images
+  return AppState.galleryManifest
     .filter(img => img.path.startsWith(folderPath))
-    .map(img => new GalleryImage({ path: img.path }))
 })
 
 

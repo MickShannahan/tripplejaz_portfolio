@@ -11,6 +11,7 @@ import { decode } from 'blurhash'
  */
 export function decodeBlurHash(blurHash, width = 100, height = 100) {
   if (!blurHash) return null
+  if (blurHash.startsWith('data:image')) return blurHash
 
   try {
     const pixels = decode(blurHash, width, height)

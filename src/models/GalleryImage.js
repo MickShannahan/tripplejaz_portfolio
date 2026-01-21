@@ -14,8 +14,8 @@ export class GalleryImage {
     this.height = height || 0
     this.blurHash = blurHash ? decodeBlurHash(blurHash, Math.round(this.width / 100), Math.round(this.height / 100)) : ''
 
-    // Initialize both loaders
-    // this.loadManifestData()
+    if (!this.blurHash || !this.thumbnailPath)
+      this.loadManifestData()
   }
 
   /**
@@ -37,7 +37,7 @@ export class GalleryImage {
 
 
       // Find this image in manifest
-      const imageData = AppState.galleryManifest.images.find(img => img.path === this.path)
+      const imageData = AppState.galleryManifest.find(img => img.path === this.path)
       if (imageData) {
         this.height = imageData.height
         this.width = imageData.width
