@@ -131,6 +131,7 @@ function findImages(dirPath, relativePath = '') {
     const relPath = relativePath ? `${relativePath}/${file.name}` : file.name
 
     if (file.isDirectory()) {
+      console.log('📂...', relPath)
       images.push(...findImages(fullPath, relPath))
     } else {
       const ext = path.extname(file.name).toLowerCase()

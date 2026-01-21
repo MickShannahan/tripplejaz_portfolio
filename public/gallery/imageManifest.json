@@ -1,11 +1,39 @@
 {
-  "generated": "2026-01-18T18:24:27.813Z",
-  "totalImages": 87,
+  "generated": "2026-01-21T04:03:00.622Z",
+  "totalImages": 64,
   "images": [
     {
-      "path": "concept art/BaronDauntek_4K.png",
-      "thumbnailPath": "_thumbnails/concept art/BaronDauntek_4K.webp",
+      "path": "concept art/0_Machi-CharacterConcept_4K.png",
+      "thumbnailPath": "_thumbnails/concept art/0_Machi-CharacterConcept_4K.webp",
+      "blurHash": "L8GIp0~q-=H?00IUE2%N00D*IntR",
+      "width": 3840,
+      "height": 2160
+    },
+    {
+      "path": "concept art/1_BaronDauntek_4K.png",
+      "thumbnailPath": "_thumbnails/concept art/1_BaronDauntek_4K.webp",
       "blurHash": "LHHd~,_3xb_400NFV@In0KITRj9Y",
+      "width": 3840,
+      "height": 2160
+    },
+    {
+      "path": "concept art/1_Wildcallers_01.jpg",
+      "thumbnailPath": "_thumbnails/concept art/1_Wildcallers_01.webp",
+      "blurHash": "LQI}-7iw^+xH00ofM{V[_4bvI.kV",
+      "width": 3840,
+      "height": 2160
+    },
+    {
+      "path": "concept art/2_Wildcallers_03.jpg",
+      "thumbnailPath": "_thumbnails/concept art/2_Wildcallers_03.webp",
+      "blurHash": "LAMj~*RjImM|00t6~pogt7t7IUt7",
+      "width": 3840,
+      "height": 2160
+    },
+    {
+      "path": "concept art/3_Wildcallers_02.jpg",
+      "thumbnailPath": "_thumbnails/concept art/3_Wildcallers_02.webp",
+      "blurHash": "L7M7.At8_3WA00IUIU%M~qxuD%Rj",
       "width": 3840,
       "height": 2160
     },
@@ -76,13 +104,6 @@
       "path": "concept art/Laeodians.png",
       "thumbnailPath": "_thumbnails/concept art/Laeodians.webp",
       "blurHash": "L6J*^Y_MD6Ri00M{w#kC00Dj%yx[",
-      "width": 3840,
-      "height": 2160
-    },
-    {
-      "path": "concept art/Machi-CharacterConcept_4K.png",
-      "thumbnailPath": "_thumbnails/concept art/Machi-CharacterConcept_4K.webp",
-      "blurHash": "L8GIp0~q-=H?00IUE2%N00D*IntR",
       "width": 3840,
       "height": 2160
     },
@@ -171,198 +192,9 @@
       "height": 1080
     },
     {
-      "path": "concept art/Wildcallers_01.jpg",
-      "thumbnailPath": "_thumbnails/concept art/Wildcallers_01.webp",
-      "blurHash": "LQI}-7iw^+xH00ofM{V[_4bvI.kV",
-      "width": 3840,
-      "height": 2160
-    },
-    {
-      "path": "concept art/Wildcallers_02.jpg",
-      "thumbnailPath": "_thumbnails/concept art/Wildcallers_02.webp",
-      "blurHash": "L7M7.At8_3WA00IUIU%M~qxuD%Rj",
-      "width": 3840,
-      "height": 2160
-    },
-    {
-      "path": "concept art/Wildcallers_03.jpg",
-      "thumbnailPath": "_thumbnails/concept art/Wildcallers_03.webp",
-      "blurHash": "LAMj~*RjImM|00t6~pogt7t7IUt7",
-      "width": 3840,
-      "height": 2160
-    },
-    {
       "path": "concept art/Wildcallers_Exploration-043.jpg",
       "thumbnailPath": "_thumbnails/concept art/Wildcallers_Exploration-043.webp",
       "blurHash": "L4N17JGOX|0_00%NnW?]E3jIaJjF",
-      "width": 3840,
-      "height": 2160
-    },
-    {
-      "path": "magicpunk/BaronDauntek_4K.png",
-      "thumbnailPath": "_thumbnails/magicpunk/BaronDauntek_4K.webp",
-      "blurHash": "LHHd~,_3xb_400NFV@In0KITRj9Y",
-      "width": 500,
-      "height": 281
-    },
-    {
-      "path": "magicpunk/ColorAndLight-Homework-3-NFowkes-MagicPunk-SelectD-Color.jpg",
-      "thumbnailPath": "_thumbnails/magicpunk/ColorAndLight-Homework-3-NFowkes-MagicPunk-SelectD-Color.webp",
-      "blurHash": "Ln8sh~pIi_aipypJZ~jdNDb^aJja",
-      "width": 500,
-      "height": 249
-    },
-    {
-      "path": "magicpunk/creaturesandcharacters-p1-portfolio06.jpg",
-      "thumbnailPath": "_thumbnails/magicpunk/creaturesandcharacters-p1-portfolio06.webp",
-      "blurHash": "L7NmjAoj@Y~q?=4V.TsE00D$Y5S5",
-      "width": 500,
-      "height": 321
-    },
-    {
-      "path": "magicpunk/CreaturesandCharacters-SkinandBones-2-Final.jpg",
-      "thumbnailPath": "_thumbnails/magicpunk/CreaturesandCharacters-SkinandBones-2-Final.webp",
-      "blurHash": "L9N^3#Fz]*.9_MDl%ft902Q-S~jD",
-      "width": 500,
-      "height": 321
-    },
-    {
-      "path": "magicpunk/daunteks01.jpg",
-      "thumbnailPath": "_thumbnails/magicpunk/daunteks01.webp",
-      "blurHash": "LWEzGuzrF]Iq_Nr^f3j@xKt,v|n#",
-      "width": 500,
-      "height": 281
-    },
-    {
-      "path": "magicpunk/Dreglands_Concept.jpg",
-      "thumbnailPath": "_thumbnails/magicpunk/Dreglands_Concept.webp",
-      "blurHash": "LLEy0y~W0f00RiROZ~IoIVNHt7-;",
-      "width": 500,
-      "height": 288
-    },
-    {
-      "path": "magicpunk/KeyArt-Mining.png",
-      "thumbnailPath": "_thumbnails/magicpunk/KeyArt-Mining.webp",
-      "blurHash": "LVJQ+o-o4TkX_NxtM|og9^oz%gV@",
-      "width": 500,
-      "height": 281
-    },
-    {
-      "path": "magicpunk/LaeOdeHome.png",
-      "thumbnailPath": "_thumbnails/magicpunk/LaeOdeHome.webp",
-      "blurHash": "L8MR6uIC00D$02t3?wxw00%f_4%L",
-      "width": 500,
-      "height": 281
-    },
-    {
-      "path": "magicpunk/Laeodians.png",
-      "thumbnailPath": "_thumbnails/magicpunk/Laeodians.webp",
-      "blurHash": "L6J*^Y_MD6Ri00M{whof00Dj%yx[",
-      "width": 500,
-      "height": 281
-    },
-    {
-      "path": "magicpunk/Machi-CharacterConcept_4K.png",
-      "thumbnailPath": "_thumbnails/magicpunk/Machi-CharacterConcept_4K.webp",
-      "blurHash": "L8GIp0~q-=H?00E1E2%N00D*IUtR",
-      "width": 500,
-      "height": 281
-    },
-    {
-      "path": "magicpunk/MagicPunk-BikeMakerMagicPunk-SelectD-CharacterDesign-Color.jpg",
-      "thumbnailPath": "_thumbnails/magicpunk/MagicPunk-BikeMakerMagicPunk-SelectD-CharacterDesign-Color.webp",
-      "blurHash": "LiLh3:Wo%NyD~UkCt7ozx^t7RjV@",
-      "width": 500,
-      "height": 249
-    },
-    {
-      "path": "magicpunk/MagicPunk_Creature.png",
-      "thumbnailPath": "_thumbnails/magicpunk/MagicPunk_Creature.webp",
-      "blurHash": "L9M7S|8w-;H?00?cbvMd00Tdo}?^",
-      "width": 500,
-      "height": 281
-    },
-    {
-      "path": "magicpunk/MagicPunk_Vol1_007.png",
-      "thumbnailPath": "_thumbnails/magicpunk/MagicPunk_Vol1_007.webp",
-      "blurHash": "LbK0{oNb$KxW~pR-S$t8F|R.EMNF",
-      "width": 500,
-      "height": 759
-    },
-    {
-      "path": "magicpunk/MagicPunk_Vol1_Chapter3_Break_COlor.jpg",
-      "thumbnailPath": "_thumbnails/magicpunk/MagicPunk_Vol1_Chapter3_Break_COlor.webp",
-      "blurHash": "LlIEqvIoXVwb.TNHENsR%2R.V?s.",
-      "width": 500,
-      "height": 759
-    },
-    {
-      "path": "magicpunk/MP-MachisBike.png",
-      "thumbnailPath": "_thumbnails/magicpunk/MP-MachisBike.webp",
-      "blurHash": "L4HLVp{@?Gt.00xZJDR400CA4Tw^",
-      "width": 500,
-      "height": 281
-    },
-    {
-      "path": "magicpunk/MP_Props.png",
-      "thumbnailPath": "_thumbnails/magicpunk/MP_Props.webp",
-      "blurHash": "L7H1=R4A:gNF00X+x+tR01RBXUtl",
-      "width": 500,
-      "height": 281
-    },
-    {
-      "path": "magicpunk/Skarper-Character-Sheet-Final01.jpg",
-      "thumbnailPath": "_thumbnails/magicpunk/Skarper-Character-Sheet-Final01.webp",
-      "blurHash": "L3I};g9F-;D%N9?Gx^-:00t7DhM|",
-      "width": 500,
-      "height": 281
-    },
-    {
-      "path": "magicpunk/Skarper-Character-Sheet-Final02-Gun.jpg",
-      "thumbnailPath": "_thumbnails/magicpunk/Skarper-Character-Sheet-Final02-Gun.webp",
-      "blurHash": "L6KUWg_3kUx]ErRN8^x^00f5D%Ri",
-      "width": 500,
-      "height": 281
-    },
-    {
-      "path": "magicpunk/Skarper-Character-Sheet-Final03-Vehicle.jpg",
-      "thumbnailPath": "_thumbnails/magicpunk/Skarper-Character-Sheet-Final03-Vehicle.webp",
-      "blurHash": "LAJ[L~xCITs+%QxtMxs:00o#IotR",
-      "width": 500,
-      "height": 281
-    },
-    {
-      "path": "magicpunk/TavernTrouble.jpg",
-      "thumbnailPath": "_thumbnails/magicpunk/TavernTrouble.webp",
-      "blurHash": "LBGuaxuj0P00Tb4o^,$e0K0K.Tr;",
-      "width": 500,
-      "height": 281
-    },
-    {
-      "path": "magicpunk/Teep-MagicPunk+Character+Sheet-Update.jpg",
-      "thumbnailPath": "_thumbnails/magicpunk/Teep-MagicPunk+Character+Sheet-Update.webp",
-      "blurHash": "LmNwfzRlt6o#-Qt6f+s..TbIWBWC",
-      "width": 500,
-      "height": 281
-    },
-    {
-      "path": "magicpunk/TheJex.png",
-      "thumbnailPath": "_thumbnails/magicpunk/TheJex.webp",
-      "blurHash": "L8I|5n0z9EIpEf-P~V^kx^-9E3Sg",
-      "width": 500,
-      "height": 281
-    },
-    {
-      "path": "magicpunk/Wasteland01.jpg",
-      "thumbnailPath": "_thumbnails/magicpunk/Wasteland01.webp",
-      "blurHash": "LHM?r1SeIW?F9PXStQjc.m%f-oR+",
-      "width": 500,
-      "height": 281
-    },
-    {
-      "path": "paintings/0_Machi-SplashKA_FINAL.jpg",
-      "thumbnailPath": "_thumbnails/paintings/0_Machi-SplashKA_FINAL.webp",
-      "blurHash": "LLE.3W}*xEInE4EK,-wuNfOrNztm",
       "width": 3840,
       "height": 2160
     },
@@ -400,6 +232,13 @@
       "blurHash": "LdEMhDD%Wusk?dM{RkoHnkt6Mxax",
       "width": 2295,
       "height": 3195
+    },
+    {
+      "path": "paintings/Machi-SplashKA_FINAL.jpg",
+      "thumbnailPath": "_thumbnails/paintings/Machi-SplashKA_FINAL.webp",
+      "blurHash": "LLE.3W}*xEInE4EK,-wuNfOrNztm",
+      "width": 3840,
+      "height": 2160
     },
     {
       "path": "paintings/MadJak.jpg",
