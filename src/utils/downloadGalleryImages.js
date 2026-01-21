@@ -27,7 +27,6 @@ import GoogleDriveReader from './GoogleDriveReader.js';
 const isDevMode = process.env.NODE_ENV === 'DEV' || process.env.NODE_ENV == 'development';
 const galleryDir = 'public/gallery'
 const GALLERY_ROOT = path.join(__dirname, `../../${galleryDir}`);
-const MANIFEST_FILE = path.join(GALLERY_ROOT, 'downloadManifest.json');
 
 // Parse command line arguments
 const args = process.argv.slice(2);
@@ -35,26 +34,6 @@ const forceRedownload = args.includes('--force');
 const dryRun = args.includes('--dry-run');
 
 console.log('env', isDevMode,)
-/**
- * Load existing download manifest to avoid re-downloading
- */
-function loadManifest() {
-  try {
-    if (fs.existsSync(MANIFEST_FILE)) {
-      return JSON.parse(fs.readFileSync(MANIFEST_FILE, 'utf-8'));
-    }
-  } catch (error) {
-    console.warn('⚠️ Could not load manifest, will download all files');
-  }
-  return {};
-}
-
-/**
- * Save download manifest
- */
-function saveManifest(manifest) {
-  fs.writeFileSync(MANIFEST_FILE, JSON.stringify(manifest, null, 2));
-}
 
 /**
  * Recursively find all image files on disk and remove ones not in Google Drive
@@ -63,6 +42,9 @@ function saveManifest(manifest) {
 async function cleanupOrphanedFiles(currentGoogleDriveFiles, allGoogleDriveFiles) {
   const syncedExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.webp', '.svg', '.txt'];
   const orphanedFiles = [];
+
+  // Create case-insensitive lookup for Google Drive files (Windows file systems are case-insensitive)
+  const googleDriveFilesLower = new Set(Array.from(currentGoogleDriveFiles).map(p => p.toLowerCase()));
 
   // Extract top-level folder names from Google Drive
   const googleDriveFolders = new Set();
@@ -85,6 +67,9 @@ async function cleanupOrphanedFiles(currentGoogleDriveFiles, allGoogleDriveFiles
 
         const fullPath = path.join(dirPath, item.name);
         const relativePath = baseRelativePath ? `${baseRelativePath}/${item.name}` : item.name;
+        // Normalize to forward slashes for consistent comparison with Google Drive paths
+        const normalizedPath = relativePath.replace(/\\/g, '/');
+        const normalizedPathLower = normalizedPath.toLowerCase();
 
         if (item.isDirectory()) {
           // Only process directories that are in Google Drive (top level only)
@@ -100,8 +85,8 @@ async function cleanupOrphanedFiles(currentGoogleDriveFiles, allGoogleDriveFiles
           const isSyncedFile = syncedExtensions.some(ext => fileName.endsWith(ext));
 
           if (isSyncedFile) {
-            // Check if this file exists in Google Drive
-            if (!currentGoogleDriveFiles.has(relativePath)) {
+            // Check if this file exists in Google Drive (case-insensitive comparison)
+            if (!googleDriveFilesLower.has(normalizedPathLower)) {
               console.log(`   ❓ File not found in Google Drive: ${relativePath}`);
               if (!dryRun) {
                 try {
@@ -202,34 +187,15 @@ export async function downloadGalleryImages() {
     console.log(`🖼️ Found ${images.length} synced files\n`);
     console.log(`📂 Destination: ${isDevMode ? 'public/gallery (DEV mode)' : 'docs/gallery (production)'}\n`);
 
-    // Load existing manifest
-    let manifest = loadManifest();
-
-    if (forceRedownload) {
-      console.log('🔄 Force re-download mode - will download all files\n');
-      manifest = {};
-    }
-
     // Clean up files on disk that are no longer on Google Drive
     console.log('🧹 Cleaning up orphaned files...');
     const currentGoogleDriveFiles = new Set(images.map(img => img.path));
-    const orphanedFiles = await cleanupOrphanedFiles(currentGoogleDriveFiles, allFiles);
-
-    // Remove orphaned files from manifest
-    for (const orphanedPath of orphanedFiles) {
-      for (const [fileId, entry] of Object.entries(manifest)) {
-        if (entry.filePath === orphanedPath) {
-          delete manifest[fileId];
-          break;
-        }
-      }
-    }
+    await cleanupOrphanedFiles(currentGoogleDriveFiles, allFiles);
 
     // Track downloads
     let downloadCount = 0;
     let skippedCount = 0;
     let failedCount = 0;
-    const newDownloads = {};
 
     // Download images
     console.log('📥 Starting downloads...\n');
@@ -238,24 +204,15 @@ export async function downloadGalleryImages() {
       const fileId = image.id;
       const filePath = image.path;
 
-      // Check if already downloaded and unchanged
-      if (!forceRedownload && manifest[fileId]) {
-        // Verify file hasn't changed by comparing size and modification time
-        const previousEntry = manifest[fileId];
-        const fileChanged = previousEntry.size !== image.size ||
-          previousEntry.modifiedTime !== image.modifiedTime;
-
-        if (!fileChanged) {
-          console.log(`⏭️  Skipped: ${filePath}`);
-          skippedCount++;
-          continue;
-        } else {
-          console.log(`🔄 Updated: ${filePath} (changed on Drive)`);
-        }
-      }
-
       // Prepare output path
       const outputPath = path.join(GALLERY_ROOT, filePath);
+
+      // Check if file already exists (skip if not force redownload)
+      if (!forceRedownload && fs.existsSync(outputPath)) {
+        console.log(`⏭️  Skipped: ${filePath}`);
+        skippedCount++;
+        continue;
+      }
 
       try {
         if (dryRun) {
@@ -266,19 +223,11 @@ export async function downloadGalleryImages() {
           console.log(`⬇️  Downloading: ${filePath}`);
         }
 
-        const downloadInfo = await downloadFile(reader, fileId, outputPath, image);
-        newDownloads[fileId] = downloadInfo;
+        await downloadFile(reader, fileId, outputPath, image);
         downloadCount++;
       } catch (error) {
         failedCount++;
       }
-    }
-
-    // Update manifest with new downloads
-    manifest = { ...manifest, ...newDownloads };
-
-    if (!dryRun) {
-      saveManifest(manifest);
     }
 
     // Summary
@@ -289,20 +238,16 @@ export async function downloadGalleryImages() {
     console.log(`⏭️  Skipped: ${skippedCount}`);
     console.log(`❌ Failed: ${failedCount}`);
 
-    console.log(`📦 Total tracked: ${Object.keys(manifest).length}`)
-
     if (dryRun) {
       console.log('\n(This was a DRY RUN - no files were actually downloaded)');
     }
 
     console.log(`\n📂 Images saved to: ${GALLERY_ROOT}`);
-    console.log(`📋 Manifest saved to: ${MANIFEST_FILE}`);
 
     return {
       downloaded: downloadCount,
       skipped: skippedCount,
-      failed: failedCount,
-      total: Object.keys(manifest).length
+      failed: failedCount
     };
   } catch (error) {
     console.error('❌ Error:', error.message);
