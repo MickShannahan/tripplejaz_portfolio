@@ -1,8 +1,6 @@
 name: Build VUE App 🛠️
 
 on:
-  push:
-    branches: ["main"]
   workflow_dispatch:
 
 # Sets the GITHUB_TOKEN permissions to allow deployment to GitHub Pages
@@ -18,7 +16,7 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
-    if: contains(github.event.head_commit.message, 'deploy') || contains(github.event.head_commit.message, 'publish')
+    # if: contains(github.event.head_commit.message, 'deploy') || contains(github.event.head_commit.message, 'publish')
 
     steps:
       - name: Checkout code 👀
