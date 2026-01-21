@@ -40,12 +40,24 @@ const galleryImgs = computed(() => {
       <strong>Welcome to the World of Geal'Don</strong>
     </h1>
     <div>
-      <p class="large-font my-3">
+      <p class="large-font my-3 mb-4">
         MagicPunk is a high fantasy sci-fi romp about a young elf named Machi who forsakes becoming an Enphyzar (mage) in search of the Ambassador, a fabled mage who mastered crystallic magic, called Enphyralism, without going completely insane. Magicpunk is a derogatory term for delinquents who use their enphyral powers to follow their own pursuits, marked particularly by travelling on speeder bikes called finzters, and forsaking the Enphyral Imperium's strict code of conduct: forbidden use of magic outside academy grounds.
       </p>
-      <ButtonLink link="https://globalcomix.com/c/magicpunk/chapters/en/1/#c-comics-releases-70253">
-        READ THE COMIC (DIGITAL)
-      </ButtonLink>
+      <h4>READ THE COMIC</h4>
+      <div class="d-flex justify-content-center gap-2 mb-5">
+        <ButtonLink link="https://globalcomix.com/c/magicpunk/chapters/en/1/#c-comics-releases-70253" class="btn-link">
+          <img src="/src/assets/img/globalcomix_logo.png" alt="global comix logo" class="icon">
+          Global Comix
+        </ButtonLink>
+        <ButtonLink link="https://www.webtoons.com/en/canvas/magicpunk/list?title_no=1116782" class="btn-link">
+          <img src="/src/assets/img/webtoon_logo.png" alt="global comix logo" class="icon">
+          Web Toons
+        </ButtonLink>
+        <ButtonLink link="https://tapas.io/series/MagicPunk/info" class="btn-link">
+          <img src="/src/assets/img/tapas_logo.png" alt="global comix logo" class="icon bg-tapas" >
+          Tapas
+        </ButtonLink>
+      </div>
       <p class="my-3">
         Familiarize yourself with the world of Gael’Don with on-going art explorations of various locales, characters and creatures.
       </p>
@@ -59,5 +71,17 @@ const galleryImgs = computed(() => {
 
 
 <style lang="scss" scoped>
+.btn-link{
+  min-width: 20ch;
+}
 
+.icon{
+  height: 40px;
+  width: 40px;
+}
+
+.bg-tapas{
+  background-color: #fdca01;
+  border-radius: 50px;
+}
 </style>

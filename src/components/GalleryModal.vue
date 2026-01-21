@@ -33,12 +33,11 @@ const tallOrWide = computed(()=> props.imgData.height > props.imgData.width ? 't
 
 async function getProjectMarkdown(projectName){
   const response = await fetch(`/gallery/${projectName}/description.txt`)
-  if(!response.ok) return null
+  if(response.statusText != 'OK' ) return null
   const data = await response.text()
-  console.log(data)
+  if(data.startsWith('<!DOCTYPE html>')) return null
   const descText = data.split('---')
   projectDescription.value = descText
-  console.log(descText)
 }
 
 </script>
