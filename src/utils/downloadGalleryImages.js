@@ -90,7 +90,7 @@ async function cleanupOrphanedFiles(currentGoogleDriveFiles, allGoogleDriveFiles
           // Only process directories that are in Google Drive (top level only)
           const topLevelFolder = baseRelativePath || item.name;
           const topLevelFolderName = topLevelFolder.split('/')[0]; // Get the first folder name
-          
+
           if (googleDriveFolders.has(topLevelFolderName)) {
             walkDirectory(fullPath, relativePath);
           }
