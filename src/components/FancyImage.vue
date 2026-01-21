@@ -2,9 +2,10 @@
 import { ref, computed, onMounted } from 'vue';
 import { GalleryImage } from '../models/GalleryImage';
 import { getGalleryImagePath } from '../utils/pathUtils';
+import { GalleryProject } from '../models/GalleryProject';
 
 const {imgData} = defineProps({
-  imgData : {type: GalleryImage, required: true},
+  imgData : {type: [GalleryImage, GalleryProject], required: true},
   position: Number
 })
 
@@ -12,6 +13,7 @@ const emit = defineEmits('imgClicked')
 
 const thumbLoaded = ref(false)
 const fullLoaded = ref(false)
+const isProject = computed(()=> imgData instanceof GalleryProject)
 
 
 function setActiveImage(){
@@ -30,6 +32,8 @@ function setActiveImage(){
   <img loading="lazy" @load="thumbLoaded = true" :src="`/gallery/${imgData.thumbnailPath}`" :width="imgData.width" :height="imgData.height" class="thumb-img" :class="{loaded: thumbLoaded}" alt="thumbnail">
 
   <img v-if="thumbLoaded" @load="fullLoaded = true" loading="lazy" :src="`/gallery/${imgData.path}`" :alt="imgData.title" class="full-img" :class="{loaded: fullLoaded}" :width="imgData.width" :height="imgData.height">
+
+  <span v-if="isProject" class="project-icon"><i class="mdi mdi-image-multiple-outline"></i></span>
 
 </div>
 </template>
@@ -86,6 +90,18 @@ function setActiveImage(){
     &.loaded{
       opacity: 1;
     }
+  }
+
+  .project-icon{
+    height: 1em;
+    width: 1em;
+    position: absolute;
+    bottom: 1rem;
+    right: .5rem;
+    z-index: 1;
+    text-shadow: 0px 2px 4px black;
+    font-size: 2em;
+    opacity: .8;
   }
 
   @keyframes slide-in{

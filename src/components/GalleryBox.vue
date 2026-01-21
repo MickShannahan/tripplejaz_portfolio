@@ -28,7 +28,6 @@ onMounted(()=>{
   const params = route.query?.img
   if(!params) { return}
   const cleanParams = decodeURIComponent(params)
-  console.log('🫧',cleanParams)
   const imageData = galleryImgs.find(i => i.path == cleanParams)
   console.log(imageData)
   if(imageData) {

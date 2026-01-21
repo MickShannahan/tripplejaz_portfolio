@@ -1,6 +1,6 @@
 {
-  "generated": "2026-01-21T04:03:00.622Z",
-  "totalImages": 64,
+  "generated": "2026-01-21T05:47:32.142Z",
+  "totalImages": 69,
   "images": [
     {
       "path": "concept art/0_Machi-CharacterConcept_4K.png",
@@ -199,6 +199,48 @@
       "height": 2160
     },
     {
+      "path": "paintings/$project_Machi-splash/0_joe-tripplejaz-zavaletta-machi-splashka-final.jpg",
+      "thumbnailPath": "_thumbnails/paintings/$project_Machi-splash/0_joe-tripplejaz-zavaletta-machi-splashka-final.webp",
+      "blurHash": "LLE.3W}*xEInE4EK,-wuNfOrNztm",
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "path": "paintings/$project_Machi-splash/0_joe-tripplejaz-zavaletta-machi-splashka-thumbnails.jpg",
+      "thumbnailPath": "_thumbnails/paintings/$project_Machi-splash/0_joe-tripplejaz-zavaletta-machi-splashka-thumbnails.webp",
+      "blurHash": "L8CsjjRj?bofD%%MM{RjWBt7~qM{",
+      "width": 1920,
+      "height": 1465
+    },
+    {
+      "path": "paintings/$project_Machi-splash/1_joe-tripplejaz-zavaletta-machi-splashka-r2-wip1.jpg",
+      "thumbnailPath": "_thumbnails/paintings/$project_Machi-splash/1_joe-tripplejaz-zavaletta-machi-splashka-r2-wip1.webp",
+      "blurHash": "LKI:;L_};oH?@=Kk+t=t9u5,TeWF",
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "path": "paintings/$project_Machi-splash/2_joe-tripplejaz-zavaletta-machi-splashka-r2-wip2.jpg",
+      "thumbnailPath": "_thumbnails/paintings/$project_Machi-splash/2_joe-tripplejaz-zavaletta-machi-splashka-r2-wip2.webp",
+      "blurHash": "L9ELgi@q9P56M^Gazn=W4_D~*0WZ",
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "path": "paintings/$project_Machi-splash/3_joe-tripplejaz-zavaletta-machi-splashka-r2-wip7.jpg",
+      "thumbnailPath": "_thumbnails/paintings/$project_Machi-splash/3_joe-tripplejaz-zavaletta-machi-splashka-r2-wip7.webp",
+      "blurHash": "LBDk_t}9jM9~5T5+,,wGXDNaJ8t.",
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "path": "paintings/$project_Machi-splash/4_joe-tripplejaz-zavaletta-machi-splashka-final-nofx.jpg",
+      "thumbnailPath": "_thumbnails/paintings/$project_Machi-splash/4_joe-tripplejaz-zavaletta-machi-splashka-final-nofx.webp",
+      "blurHash": "LKFO4m}?xDI:IWE0,mwGS+OYOatT",
+      "width": 1920,
+      "height": 1080
+    },
+    {
       "path": "paintings/Fairy slug_UPDATE.jpg",
       "thumbnailPath": "_thumbnails/paintings/Fairy slug_UPDATE.webp",
       "blurHash": "LMCXygI=ofxG}WIps.s.-URkSNj[",
@@ -232,13 +274,6 @@
       "blurHash": "LdEMhDD%Wusk?dM{RkoHnkt6Mxax",
       "width": 2295,
       "height": 3195
-    },
-    {
-      "path": "paintings/Machi-SplashKA_FINAL.jpg",
-      "thumbnailPath": "_thumbnails/paintings/Machi-SplashKA_FINAL.webp",
-      "blurHash": "LLE.3W}*xEInE4EK,-wuNfOrNztm",
-      "width": 3840,
-      "height": 2160
     },
     {
       "path": "paintings/MadJak.jpg",

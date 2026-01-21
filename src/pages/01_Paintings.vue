@@ -18,25 +18,24 @@ export const pageConfig = new Page({
 import { AppState } from '../AppState';
 import GalleryBox from '../components/GalleryBox.vue';
 import { GalleryImage } from '../models/GalleryImage';
-import { computed } from 'vue';
+import { computed, onMounted } from 'vue';
 
 const galleryFolder = 'paintings'
 const galleryGridClass = 'columns'
 const galleryGridRowWidth = 300
 
 const galleryImgs = computed(() => {
-  if (!AppState.galleryManifest?.images) return []
-  
+  if (!AppState.galleryManifest) return []
   const folderPath = `${galleryFolder}/`
-  return AppState.galleryManifest.images
+  const images = AppState.galleryManifest
     .filter(img => img.path.startsWith(folderPath))
-    .map(img => new GalleryImage(img))
+  return images
 })
 
 </script>
 
 <template>
-  <GalleryBox :galleryImgs="galleryImgs" :galleryType="galleryGridClass" :columnSize="galleryGridRowWidth" />
+  <GalleryBox :galleryImgs :galleryType="galleryGridClass" :columnSize="galleryGridRowWidth" />
 </template>
 
 <style lang="scss" scoped>

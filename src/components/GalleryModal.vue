@@ -1,18 +1,27 @@
 <script setup>
 import { computed, ref, watch } from 'vue';
 import { GalleryImage } from '../models/GalleryImage';
+import { GalleryProject } from '../models/GalleryProject';
 
 const props = defineProps({imgData: GalleryImage, id: { type: String, default: ''}})
 const emit = defineEmits('closeModal', 'prevImg', 'nextImg')
 
 const thumbLoaded = ref(false)
 const fullLoaded = ref(false)
+const projectDescription = ref([])
+const isProject = computed(()=> props.imgData instanceof GalleryProject)
 
 watch(()=>props.imgData, (pData)=>{
   console.log('  👉👉', pData?.blurHash)
   if( pData == null){
     thumbLoaded.value = false
     fullLoaded.value = false
+    projectDescription.value = []
+  }
+  if(isProject.value){
+    const projName = props.imgData.path.slice(0, props.imgData.path.lastIndexOf('/'))
+    console.log(projName)
+    getProjectMarkdown(projName)
   }
 }, {deep: true})
 
@@ -22,6 +31,15 @@ function closeModal(){
 
 const tallOrWide = computed(()=> props.imgData.height > props.imgData.width ? 'tall' : 'wide')
 
+async function getProjectMarkdown(projectName){
+  const response = await fetch(`/gallery/${projectName}/description.txt`)
+  if(!response.ok) return null
+  const data = await response.text()
+  console.log(data)
+  const descText = data.split('---')
+  projectDescription.value = descText
+  console.log(descText)
+}
 
 </script>
 
@@ -44,34 +62,43 @@ const tallOrWide = computed(()=> props.imgData.height > props.imgData.width ? 't
       <section class="d-flex align-items-center h-100">
 
           <!-- large image -->
-          <div class="img-container">
-            <div class="img-wrapper" :class="[tallOrWide]" :style="`--aspect-ratio: ${imgData.width} / ${imgData.height}`">
-                <img v-if="imgData.blurHash" :width="imgData.width" :height="imgData.height" :src="imgData.blurHash" class="blurry-img" :class="{loaded: thumbLoaded}">
-
-                <img loading="lazy" @load="thumbLoaded = true" :src="`/gallery/${imgData.thumbnailPath}`" :width="imgData.width" :height="imgData.height" class="thumb-img" :class="{loaded: thumbLoaded}" alt="thumbnail">
-
-                <img v-if="thumbLoaded" @load="fullLoaded = true" loading="lazy" :src="`/gallery/${imgData.path}`" :alt="imgData.title" class="full-img" :class="{loaded: fullLoaded}" :width="imgData.width" :height="imgData.height">
+           <template v-if="!isProject">
+             <div class="img-container">
+               <div class="img-wrapper" :class="[tallOrWide]" :style="`--aspect-ratio: ${imgData.width} / ${imgData.height}`">
+                 <img v-if="imgData.blurHash" :width="imgData.width" :height="imgData.height" :src="imgData.blurHash" class="blurry-img" :class="{loaded: thumbLoaded}">
+                 
+                 <img loading="lazy" @load="thumbLoaded = true" :src="`/gallery/${imgData.thumbnailPath}`" :width="imgData.width" :height="imgData.height" class="thumb-img" :class="{loaded: thumbLoaded}" alt="thumbnail">
+                 
+                 <img v-if="thumbLoaded" @load="fullLoaded = true" loading="lazy" :src="`/gallery/${imgData.path}`" :alt="imgData.title" class="full-img" :class="{loaded: fullLoaded}" :width="imgData.width" :height="imgData.height">
 
                 <!-- loader -->
                 <div v-if="!fullLoaded" class="position-absolute top-0 end-0">
                   <i class="mdi mdi-loading mdi-spin fs-2"></i>
                 </div>
+              </div>
             </div>
-          </div>
+          </template>
 
-          <!-- image details -->
-          <!-- <section class="img-details p-3 " v-if="imageData.title || imageData.description">
-            <div v-if="imageData.title">
-              <b>{{ imageData.title }}</b>
-              <hr class="mt-1">
-            </div>
-            <div v-if="imageData?.description" >
-              <p>{{imageData.description}}</p>
-            </div>
-            <div v-if="imageData.timestamp">
-              <small>{{ imageData.timeStampFormatted }}</small>
-            </div>
-          </section> -->
+
+          <template v-else>
+              <section class="project-container">
+
+                <div v-for="(img, i) in imgData.projectImages" class="img-container">
+                <div  class="img-wrapper" :class="[tallOrWide]" :style="`--aspect-ratio: ${img.width} / ${img.height}`">
+                  <img v-if="img.blurHash" :width="img.width" :height="img.height" :src="img.blurHash" class="blurry-img" :class="{loaded: thumbLoaded}">
+                  <img loading="lazy" @load="thumbLoaded = true" :src="`/gallery/${img.thumbnailPath}`" :width="img.width" :height="img.height" class="thumb-img" :class="{loaded: thumbLoaded}" alt="thumbnail">
+                  <img v-if="thumbLoaded" @load="fullLoaded = true" loading="lazy" :src="`/gallery/${img.path}`" :alt="img.title" class="full-img" :class="{loaded: fullLoaded}" :width="img.width" :height="img.height">
+
+                  <div v-if="!fullLoaded" class="position-absolute top-0 end-0">
+                    <i class="mdi mdi-loading mdi-spin fs-2"></i>
+                  </div>
+                  <article>{{ projectDescription[i] }}</article>
+                </div>
+                </div>
+
+              </section>
+          </template>
+
 
       </section>
       
@@ -101,6 +128,21 @@ const tallOrWide = computed(()=> props.imgData.height > props.imgData.width ? 't
   justify-content: center;
   align-items: center;
   padding: 1.5rem;
+}
+
+.project-container{
+  width: 100%;
+  max-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+  overflow-y: auto;
+  .img-wrapper.wide img{
+    max-height: 86dvh;
+  }
+  .img-wrapper.tall img{
+    height: 86dvh;
+  }
 }
 
 .img-wrapper{
@@ -164,6 +206,17 @@ const tallOrWide = computed(()=> props.imgData.height > props.imgData.width ? 't
     &.loaded{
       opacity: 1;
     }
+  }
+
+  article{
+    text-align: center;
+    margin-top: .25em;
+    margin-bottom: -.25em;
+    max-width: 65ch;
+    margin-inline: auto;
+    opacity: .9;
+    text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.473);
+    // position: absolute;
   }
 
   .mdi-load{

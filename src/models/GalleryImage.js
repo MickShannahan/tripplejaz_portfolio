@@ -10,12 +10,12 @@ export class GalleryImage {
     this.title = title
     this.description = description || ''
     this.thumbnailPath = thumbnailPath || null
-    this.blurHash = blurHash || null
     this.width = width || 0
     this.height = height || 0
+    this.blurHash = blurHash ? decodeBlurHash(blurHash, Math.round(this.width / 100), Math.round(this.height / 100)) : ''
 
     // Initialize both loaders
-    this.loadManifestData()
+    // this.loadManifestData()
   }
 
   /**
