@@ -58,10 +58,21 @@ function saveManifest(manifest) {
 
 /**
  * Recursively find all image files on disk and remove ones not in Google Drive
+ * Only processes folders that exist in Google Drive
  */
-async function cleanupOrphanedFiles(currentGoogleDriveFiles) {
+async function cleanupOrphanedFiles(currentGoogleDriveFiles, allGoogleDriveFiles) {
   const imageExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.webp', '.svg'];
   const orphanedFiles = [];
+
+  // Extract top-level folder names from Google Drive
+  const googleDriveFolders = new Set();
+  for (const file of allGoogleDriveFiles) {
+    if (file.isFolder) {
+      googleDriveFolders.add(file.name);
+    }
+  }
+
+  console.log(`📂 Google Drive folders to sync: ${Array.from(googleDriveFolders).join(', ')}`);
 
   function walkDirectory(dirPath, baseRelativePath = '') {
     try {
@@ -75,7 +86,12 @@ async function cleanupOrphanedFiles(currentGoogleDriveFiles) {
         const relativePath = baseRelativePath ? `${baseRelativePath}/${item.name}` : item.name;
 
         if (item.isDirectory()) {
-          walkDirectory(fullPath, relativePath);
+          // Only process directories that are in Google Drive
+          const topLevelFolder = baseRelativePath || item.name;
+          if (googleDriveFolders.has(topLevelFolder)) {
+            walkDirectory(fullPath, relativePath);
+          }
+          // Skip directories not in Google Drive (like 'resume')
         } else if (item.isFile()) {
           const fileName = item.name.toLowerCase();
           const isImage = imageExtensions.some(ext => fileName.endsWith(ext));
@@ -193,7 +209,7 @@ export async function downloadGalleryImages() {
     // Clean up files on disk that are no longer on Google Drive
     console.log('🧹 Cleaning up orphaned files...');
     const currentGoogleDriveFiles = new Set(images.map(img => img.path));
-    const orphanedFiles = await cleanupOrphanedFiles(currentGoogleDriveFiles);
+    const orphanedFiles = await cleanupOrphanedFiles(currentGoogleDriveFiles, allFiles);
 
     // Remove orphaned files from manifest
     for (const orphanedPath of orphanedFiles) {
