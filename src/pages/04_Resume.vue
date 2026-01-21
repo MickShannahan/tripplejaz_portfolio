@@ -91,25 +91,25 @@ const edgeComicImages = [
   <article>
     <h2><kbd>Riot Games</kbd> Team Fight Tactics </h2>
     <small> (Set 10), Skylight Collective</small>
-    <GalleryBox :gallery-imgs="riotImgs" gallery-type="carousel"/>
+    <GalleryBox id="riot" :gallery-imgs="riotImgs" gallery-type="carousel"/>
   </article>
 
   <article>
     <h2><kbd>SEGA - SEGA Forever</kbd> Sonic Origins</h2>
     <small>Social Media Promotional Art</small>
-    <GalleryBox :gallery-imgs="segaImgs" gallery-type="carousel"/>
+    <GalleryBox id="sega" :gallery-imgs="segaImgs" gallery-type="carousel"/>
   </article>
 
   <article>
     <h2><kbd>Tim Yuen</kbd> Relics of the Moon</h2>
     <small>Various art for the roleplaying game</small>
-    <GalleryBox :gallery-imgs="relicsImgs" gallery-type="carousel"/>
+    <GalleryBox id="relics" :gallery-imgs="relicsImgs" gallery-type="carousel"/>
   </article>
 
   <article>
     <h2><kbd>Kershaw Knives</kbd>The Edge Comic</h2>
     <small>Illustrations for comic</small>
-    <GalleryBox :gallery-imgs="edgeComicImages" gallery-type="carousel"/>
+    <GalleryBox id="edge" :gallery-imgs="edgeComicImages" gallery-type="carousel"/>
   </article>
 
 </section>

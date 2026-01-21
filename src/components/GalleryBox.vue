@@ -8,7 +8,8 @@ import { useRoute } from 'vue-router';
 import { GalleryImage } from '../models/GalleryImage';
 const route = useRoute()
 
-const {galleryImgs, galleryType, rows, columnSize, auto, interval} = defineProps({
+const {id, galleryImgs, galleryType, rows, columnSize, auto, interval} = defineProps({
+  id: {type: String, default: ''},
   galleryImgs: {type: Array, required: true},
   galleryType: {type: String, default: 'columns'},
   rows: {type: Number, default: 3},
@@ -28,8 +29,8 @@ onMounted(()=>{
   if(!params) { return}
   const cleanParams = decodeURIComponent(params)
   console.log('🫧',cleanParams)
-  console.log(galleryImgs)
   const imageData = galleryImgs.find(i => i.path == cleanParams)
+  console.log(imageData)
   if(imageData) {
     openActiveModal(imageData)
   }
@@ -37,13 +38,14 @@ onMounted(()=>{
 
 
 function openActiveModal(imageData){
-  Modal.getOrCreateInstance('#gallery-modal').show()
+  console.log('opening for', id, imageData)
+  Modal.getOrCreateInstance('#gallery-modal' + id).show()
   router.push(route.path +'?img='+ imageData.path)
   activeImageData.value = imageData
 }
 
 function onCloseModal(){
-  Modal.getOrCreateInstance('#gallery-modal').hide()
+  Modal.getOrCreateInstance('#gallery-modal' + id).hide()
   router.push(route.path)
   setTimeout(()=>  activeImageData.value = null, 100)
 }
@@ -113,7 +115,7 @@ function onPrevImg(){
   </div>
 </div>
 
-<GalleryModal :imgData="activeImageData" @closeModal="onCloseModal" @nextImg="onNextImg" @prevImg="onPrevImg"/>
+<GalleryModal :id :imgData="activeImageData" @closeModal="onCloseModal" @nextImg="onNextImg" @prevImg="onPrevImg"/>
 </template>
 
 

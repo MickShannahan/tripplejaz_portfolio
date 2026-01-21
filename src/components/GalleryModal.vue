@@ -2,14 +2,14 @@
 import { computed, ref, watch } from 'vue';
 import { GalleryImage } from '../models/GalleryImage';
 
-const props = defineProps({imgData: GalleryImage})
+const props = defineProps({imgData: GalleryImage, id: { type: String, default: ''}})
 const emit = defineEmits('closeModal', 'prevImg', 'nextImg')
 
 const thumbLoaded = ref(false)
 const fullLoaded = ref(false)
 
 watch(()=>props.imgData, (pData)=>{
-  console.log('  👉👉',pData.blurHash)
+  console.log('  👉👉', pData?.blurHash)
   if( pData == null){
     thumbLoaded.value = false
     fullLoaded.value = false
@@ -27,7 +27,7 @@ const tallOrWide = computed(()=> props.imgData.height > props.imgData.width ? 't
 
 
 <template>
-<div class="modal fade" id="gallery-modal" data-bs-scroll="true">
+<div class="modal fade" :id="`gallery-modal${id}`" data-bs-scroll="true">
   <div class="modal-dialog modal-fullscreen">
     <div v-if="imgData" class="modal-content">
       
