@@ -78,9 +78,7 @@ const edgeComicImages = [
 
 <template>
 <section class="container d-flex justify-content-center mb-4">
-<ButtonLink link="https://drive.google.com/file/d/1Kit57YhMr1oi1T0NaoRsQ_LU9Q-QK1lc/view">
-  Resume PDF <i class="mdi mdi-file-document"></i>
-</ButtonLink>
+
 </section>
 
 <section class="container my-4">

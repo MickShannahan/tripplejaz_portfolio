@@ -16,6 +16,7 @@ export const pageConfig = new Page({
 
 <script setup>
 import { AppState } from '../AppState';
+import ButtonLink from '../components/ButtonLink.vue';
 
 </script>
 
@@ -34,6 +35,11 @@ import { AppState } from '../AppState';
     </div>
     <div>
       <p>Drawing since the age of 2 (I remember), I found an affinity for telling stories on paper long before I made it to a computer screen. Video games, cinema, books and comics all contribute to my desire to tell old stories in new and exciting ways. I like to think of myself as a musician of sorts; the pencil is my chosen instrument, to the tune of child like wonder and imagination.</p>
+      <div class="d-flex justify-content-center">
+        <ButtonLink link="https://drive.google.com/file/d/1Kit57YhMr1oi1T0NaoRsQ_LU9Q-QK1lc/view">
+          Resume PDF <i class="mdi mdi-file-document"></i>
+        </ButtonLink>
+      </div>
       
       <div class="my-3">
         <h4>Some of my Clients include</h4>

@@ -13,10 +13,10 @@ defineProps({
   }
 })
 
-const scrolled = ref(window.scrollY > 100)
+const scrolled = ref(window.scrollY > 300)
 
 function onScroll() {
-  scrolled.value = window.scrollY > 100
+  scrolled.value = window.scrollY > 300
 }
 
 onMounted(() => {
