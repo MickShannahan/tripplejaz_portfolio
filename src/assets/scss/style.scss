@@ -4,10 +4,20 @@
 
 body {
   transition: all .2s ease;
+  background-color: var(--bs-body-bg);
+  position: relative;
   background-image: var(--bg-style, linear-gradient(180deg, var(--bs-magic-blue) -115px, var(--bs-body-bg) 325px));
-  background-size: 100%;
+  background-size: 170% 800px;
+  background-position: top;
   background-repeat: no-repeat;
 }
+
+@media (min-width: 768px) {
+  body {
+    background-size: 100%;
+  }
+}
+
 
 #app {
   display: flex;
@@ -73,4 +83,20 @@ small {
 
 .bg-blur {
   backdrop-filter: blur(20px) brightness(.8) contrast(.8);
+}
+
+.img-fluid,
+.img-fade {
+  opacity: 0;
+  animation: img-fluid-fade .2s .2s ease forwards;
+}
+
+@keyframes img-fluid-fade {
+  0% {
+    opacity: 0%;
+  }
+
+  100% {
+    opacity: 1;
+  }
 }

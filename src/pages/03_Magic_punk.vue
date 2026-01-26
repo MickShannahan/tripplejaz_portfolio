@@ -15,7 +15,7 @@ export const pageConfig = new Page({
   name: 'Magic Punk',
   title: 'Magic Punk',
   theme: 'light',
-  bgStyle: ` url(${wideScreen ? skyImageSm: skyImage}), linear-gradient(180deg, transparent -115px, var(--bs-body-bg) 80dvh)`
+  bgStyle: ` url(${wideScreen ? skyImageSm: skyImage}), linear-gradient(180deg, var(--bs-light) -115px, var(--bs-body-bg) 80dvh)`
 })
 </script>
 
@@ -43,12 +43,12 @@ const galleryImgs = computed(() => {
   <section class="container-fluid text-center py-5" style="max-width: calc(74ch + 8vw);">
     <!-- Splash Header -->
     <h1 class="page-header">
-      <img class="img-fluid" src="../assets/img/MagicPunk-NoLightning.png" alt="Magic Punk Logo">
+      <img class="img-fluid" src="../assets/img/MagicPunk-NoLightning.png" alt="Magic Punk Logo" height="1080" width="1920">
     </h1>
     <!-- About -->
       <section class="p-4 p-md-0">
         <div class="panel position-relative d-flex flex-column">
-          <img class="machi-gif order-last" src="../assets/img/machi-power.gif" alt="image of the protagonist machi holding sparking magic power in his hands">
+          <img class="machi-gif order-last img-fade" src="../assets/img/machi-power.gif" alt="image of the protagonist machi holding sparking magic power in his hands" height="600" width="600">
           <p class="p-3 p-md-5 machi-text-left position-relative">
             MagicPunk is an original, sci-fi, fantasy epic about  a young, elven mage absconds from his father's empire in search of a mythological, all-powerful wizard, angering the local dragon population. 
           </p>
@@ -149,6 +149,7 @@ const galleryImgs = computed(() => {
   // background-color: red;
   position: relative;
   max-width: 110%;
+  height: auto;
   filter: drop-shadow(5px 5px 0px black);
   margin-top: -35px;
 }
