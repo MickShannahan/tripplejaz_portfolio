@@ -4,7 +4,8 @@ import { decodeBlurHash } from '../utils/imageUtils.js';
 let manifestCache = null;
 
 export class GalleryImage {
-  constructor({ path = '', width, height, thumbnailPath, blurHash, title, description }) {
+  constructor({ path = '', width, height, thumbnailPath, blurHash = '', title, description }) {
+    console.log(path, blurHash)
     this.path = path
     this.name = path.slice(path.lastIndexOf('/') + 1)
     this.title = title
@@ -12,10 +13,12 @@ export class GalleryImage {
     this.thumbnailPath = thumbnailPath || null
     this.width = width || 0
     this.height = height || 0
-    this.blurHash = blurHash ? decodeBlurHash(blurHash, Math.round(this.width / 100), Math.round(this.height / 100)) : ''
+    this.blurHash = blurHash
+    if (!blurHash.startsWith('data:image'))
+      this.blurHash = decodeBlurHash(blurHash, Math.round(this.width / 100), Math.round(this.height / 100))
 
-    if (!this.blurHash || !this.thumbnailPath)
-      this.loadManifestData()
+    // if (!this.blurHash || !this.thumbnailPath)
+    //   this.loadManifestData()
   }
 
   /**

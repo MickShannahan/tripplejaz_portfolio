@@ -10,6 +10,7 @@ import { decode } from 'blurhash'
  * @returns {string} Data URL that can be used as an img src
  */
 export function decodeBlurHash(blurHash, width = 100, height = 100) {
+  console.log('👾', blurHash)
   if (!blurHash) return null
   if (blurHash.startsWith('data:image')) return blurHash
 
@@ -24,7 +25,7 @@ export function decodeBlurHash(blurHash, width = 100, height = 100) {
     imageData.data.set(pixels)
     ctx.putImageData(imageData, 0, 0)
 
-    return canvas.toDataURL('image/png')
+    return canvas.toDataURL('image/webp', 0.8)
   } catch (error) {
     console.error('Error decoding blurhash:', error)
     return null

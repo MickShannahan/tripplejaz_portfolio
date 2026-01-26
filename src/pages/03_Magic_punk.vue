@@ -23,7 +23,6 @@ export const pageConfig = new Page({
 import { AppState } from '../AppState';
 import ButtonLink from '../components/ButtonLink.vue';
 import GalleryBox from '../components/GalleryBox.vue';
-import { GalleryImage } from '../models/GalleryImage';
 import { computed } from 'vue';
 
 
@@ -41,11 +40,9 @@ const galleryImgs = computed(() => {
 
 <template>
   <section class="container-fluid text-center py-5" style="max-width: calc(74ch + 8vw);">
-    <!-- Splash Header -->
     <h1 class="page-header">
       <img class="img-fluid" src="../assets/img/MagicPunk-NoLightning.png" alt="Magic Punk Logo" height="1080" width="1920">
     </h1>
-    <!-- About -->
       <section class="p-4 p-md-0">
         <div class="panel position-relative d-flex flex-column">
           <img class="machi-gif order-last img-fade" src="../assets/img/machi-power.gif" alt="image of the protagonist machi holding sparking magic power in his hands" height="600" width="600">
@@ -72,7 +69,6 @@ const galleryImgs = computed(() => {
         </div>
       </section>
       
-      <!-- Link Buttons -->
       <section>
         <h4 class="f-comic fs-3">READ THE COMIC!</h4>
         <div class="d-flex flex-wrap justify-content-center gap-2 mb-5">
@@ -92,7 +88,7 @@ const galleryImgs = computed(() => {
         
         <h4 class="f-comic fs-3">SUPPORT THE COMIC!</h4>
         <div class="d-flex flex-wrap justify-content-center gap-2 mb-5">
-          <ButtonLink link="https://tripplejaz.gumroad.com/l/magicpunk-1-6?layout=profile", class="btn-link">
+          <ButtonLink link="https://tripplejaz.gumroad.com/l/magicpunk-1-6?layout=profile" class="btn-link">
             <img src="../assets/img/favicon.webp" class="icon rounded" alt="Close up of Machi's goggles">
             Download / Buy Comic
           </ButtonLink>
