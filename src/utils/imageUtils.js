@@ -10,7 +10,6 @@ import { decode } from 'blurhash'
  * @returns {string} Data URL that can be used as an img src
  */
 export function decodeBlurHash(blurHash, width = 100, height = 100) {
-  console.log('👾', blurHash)
   if (!blurHash) return null
   if (blurHash.startsWith('data:image')) return blurHash
 

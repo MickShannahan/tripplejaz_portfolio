@@ -5,7 +5,6 @@ let manifestCache = null;
 
 export class GalleryImage {
   constructor({ path = '', width, height, thumbnailPath, blurHash = '', title, description }) {
-    console.log(path, blurHash)
     this.path = path
     this.name = path.slice(path.lastIndexOf('/') + 1)
     this.title = title
