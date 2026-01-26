@@ -48,6 +48,8 @@ router.beforeEach((to, from, next) => {
       meta: [{ property: '', content: '' }],
       htmlAttrs: { 'data-bs-theme': pageConfig.theme }
     })
+    const defaultStyle = 'linear-gradient(180deg, var(--bs-jazzy) -115px, var(--bs-body-bg) 325px)'
+    document.body.setAttribute('style', `--bg-style: ${pageConfig.bgStyle || defaultStyle}`)
   }
 
   next()

@@ -12,7 +12,8 @@ export class Page {
     name = '',
     title = '',
     theme = 'dark',
-    component = null
+    component = null,
+    bgStyle
   } = {}) {
     this.navOrder = navOrder
     this.routePath = routePath
@@ -23,7 +24,8 @@ export class Page {
     this.name = name
     this.title = title
     this.theme = theme
-    this.component = component
+    this.component = component,
+      this.bgStyle = bgStyle
   }
 
   /**
