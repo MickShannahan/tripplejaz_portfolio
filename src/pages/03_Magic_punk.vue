@@ -1,6 +1,6 @@
 <script>
 import { Page } from '../models/Page'
-import skyImage from '../assets/img/Sky02-dither.png'
+import skyImage from '../assets/img/Sky02-lg-dither.png'
 import skyImageSm from '../assets/img/Sky02-sm-dither.png'
 
 const wideScreen = document.body.clientWidth > 768
@@ -15,7 +15,7 @@ export const pageConfig = new Page({
   name: 'Magic Punk',
   title: 'Magic Punk',
   theme: 'light',
-  bgStyle: ` url(${wideScreen ? skyImageSm: skyImage}), linear-gradient(180deg, var(--bs-light) -115px, var(--bs-body-bg) 80dvh)`
+  bgStyle: `url(${wideScreen ? skyImageSm: skyImage}), linear-gradient(180deg, var(--bs-light) -115px, var(--bs-body-bg) 80dvh)`
 })
 </script>
 
@@ -184,6 +184,7 @@ const galleryImgs = computed(() => {
   .img-panel:nth-child(1){
     display: flex;
     transform: skew(5deg);
+    background-color: #de8450;
   }
 
   .img-panel:nth-child(2){
@@ -192,6 +193,7 @@ const galleryImgs = computed(() => {
     align-items: top;
     justify-content: end;
     transform: skew(-5deg);
+    background-color: #22e0ff;
   }
 
   .img-panel:last-child{
@@ -199,6 +201,7 @@ const galleryImgs = computed(() => {
     align-items: end;
     justify-content: end;
     transform: skew(5deg);
+    background-color: #ab93e7;
   }
 }
 
