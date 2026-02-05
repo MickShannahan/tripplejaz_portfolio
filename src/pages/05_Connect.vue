@@ -15,14 +15,26 @@ export const pageConfig = new Page({
 </script>
 
 <script setup>
+import { computed } from 'vue';
 import { AppState } from '../AppState';
 import ButtonLink from '../components/ButtonLink.vue';
+
+const skippedLinks = ['Patreon', 'Brushes']
+const links = computed(()=> AppState.socialLinks?.filter(l => !skippedLinks.includes(l.text)))
 
 </script>
 
 
 <template>
 <section class="container">
+  <h1>My Links</h1>
+  <article class="row row-cols-md-3 g-2 justify-content-center">
+    <ButtonLink v-for="link in links" :link="link.link">
+      <i :class="`mdi ${link.icon}`"></i> {{ link.text }}
+    </ButtonLink>
+  </article>
+
+
   <article>
     <h1>Courses</h1>
     <div class="d-flex">
