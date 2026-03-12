@@ -1,10 +1,13 @@
 
 <script setup>
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 import DesktopNav from './DesktopNav.vue'
 import MobileNav from './MobileNav.vue'
 import { AppState } from '../AppState';
+import animatedLogo from '../assets/img/DarkLogoLoop-reduced.gif'
 import { router } from '../router';
+
+const logo = ref(AppState.siteLogo)
 
 const routes = computed(() => {
   return router.getRoutes()
@@ -12,12 +15,17 @@ const routes = computed(() => {
     .sort((a, b) => (a.meta?.pageConfig?.navOrder ?? 999) - (b.meta?.pageConfig?.navOrder ?? 999))
 })
 
+function changeLogoSource(){
+  logo.value = animatedLogo
+}
+
 </script>
 
 <template>
-    <DesktopNav :logo="AppState.siteLogo" :routes />
+    <img class="position-absolute opacity-0" :src="animatedLogo" @load="changeLogoSource">
+    <DesktopNav :logo="logo" :routes />
 
-    <MobileNav :logo="AppState.siteLogo" :routes />
+    <MobileNav :logo="logo" :routes />
 </template>
 
 
