@@ -1,7 +1,7 @@
 import { reactive } from 'vue'
-import siteLogo from './assets/img/Tripplejaz_Splatter_Logo.webp'
+// import siteLogo from './assets/img/Tripplejaz_Splatter_Logo.webp'
+import siteLogo from './assets/img/DarkLogo-2026.png'
 
-// NOTE AppState is a reactive object to contain app level data
 export const AppState = reactive({
   siteLogo,
   baseSiteTitle: 'Joe Zavaletta',

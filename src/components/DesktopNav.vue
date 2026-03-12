@@ -30,7 +30,7 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <nav class="navbar  transition d-none d-md-flex justify-content-center pt-4">
+  <nav class="navbar  transition d-none d-md-flex justify-content-center pb-3 pt-4">
         <!-- Logo -->
          <div class="nav-container">
            <RouterLink class="navbar-brand" to="/">
@@ -52,7 +52,12 @@ onBeforeUnmount(() => {
 
 <style scoped lang="scss">
 .nav-container{
-  width: 420px;
+  width: 520px;
+  img{
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+  }
 }
 
 .navbar {

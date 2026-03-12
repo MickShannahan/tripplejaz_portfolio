@@ -32,8 +32,9 @@ import SocialLinks from './SocialLinks.vue';
 
 <style lang="scss" scoped>
   img{
-    width: 100px;
-    object-fit: contain;
+    width: 200px;
+    aspect-ratio: 16/9;
+    object-fit: cover;
     object-position: center;
     margin-bottom: -5px;
   }
