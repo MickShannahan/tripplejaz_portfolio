@@ -142,13 +142,17 @@ function onPrevImg(){
   gap: var(--image-spacing);
   &>*{
     width: 100%;
-    aspect-ratio: 3/2;
+    aspect-ratio: 16/9;
     img{
       object-fit: cover;
       height: 100% !important;
       width: 100% !important;
     }
   }
+}
+
+@media (min-width: 768px){
+
 }
 
 .gallery-box.carousel {
