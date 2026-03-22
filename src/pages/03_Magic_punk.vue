@@ -88,7 +88,7 @@ const galleryImgs = computed(() => {
         
         <h4 class="f-comic fs-3">SUPPORT THE COMIC!</h4>
         <div class="d-flex flex-wrap justify-content-center gap-2 mb-5">
-          <ButtonLink link="https://tripplejaz.gumroad.com/l/magicpunk-1-6?layout=profile" class="btn-link">
+          <ButtonLink link="https://tripplejaz.gumroad.com/l/magicpunk-comic" class="btn-link">
             <img src="../assets/img/favicon.webp" class="icon rounded" alt="Close up of Machi's goggles">
             Download / Buy Comic
           </ButtonLink>
