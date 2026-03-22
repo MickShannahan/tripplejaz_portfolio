@@ -22,7 +22,7 @@ function changeLogoSource(){
 </script>
 
 <template>
-    <img class="position-absolute opacity-0" :src="animatedLogo" @load="changeLogoSource">
+    <img class="position-absolute opacity-0 no-click" :src="animatedLogo" @load="changeLogoSource">
     <DesktopNav :logo="logo" :routes />
 
     <MobileNav :logo="logo" :routes />
