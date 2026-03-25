@@ -1,5 +1,13 @@
 <script>
 import { Page } from '../models/Page'
+import artstationScreenPath from '../assets/img/artstation_screen.png'
+import globalComixScreenPath from '../assets/img/globalcomix_screen.png'
+import inprintScreenPath from '../assets/img/inprint_screen.png'
+import instagramScreenPath from '../assets/img/instagram_screen.png'
+import linkedinScreenPath from '../assets/img/linkedin_screen.png'
+import resumeScreenPath from '../assets/img/resume_screen.png'
+import skillshareScreenPath from '../assets/img/skillshare_screen.png'
+import youtubeScreenPath from '../assets/img/youtube_screen.png'
 
 export const pageConfig = new Page({
   navOrder: 4,
@@ -20,6 +28,16 @@ import { AppState } from '../AppState';
 import ButtonLink from '../components/ButtonLink.vue';
 
 const skippedLinks = ['Patreon', 'Brushes']
+const backgrounds = {
+  'Magic Punk Comic': globalComixScreenPath,
+  'ArtStation': artstationScreenPath,
+  'Youtube': youtubeScreenPath,
+  'Instagram': instagramScreenPath,
+  'Art Prints': inprintScreenPath,
+  'SkillShare': skillshareScreenPath,
+  'Resume': resumeScreenPath,
+  'LinkedIn': linkedinScreenPath
+}
 const links = computed(()=> AppState.socialLinks?.filter(l => !skippedLinks.includes(l.text)))
 
 </script>
@@ -28,14 +46,14 @@ const links = computed(()=> AppState.socialLinks?.filter(l => !skippedLinks.incl
 <template>
 <section class="container">
   <h1>My Links</h1>
-  <article class="row row-cols-md-3 g-2 justify-content-center">
-    <ButtonLink v-for="link in links" :link="link.link">
+  <article class="row row-cols-md-3 g-3 justify-content-center mb-3">
+    <ButtonLink v-for="link in links" :link="link.link" :background="backgrounds[link.text]">
       <i :class="`mdi ${link.icon}`"></i> {{ link.text }}
     </ButtonLink>
   </article>
 
 
-  <article>
+  <article class="mb-3">
     <h1>Courses</h1>
     <div class="d-flex">
       <a href="https://tripplejaz.gumroad.com/l/airbrushcourse" class="btn btn-link">

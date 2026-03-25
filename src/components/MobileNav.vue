@@ -42,7 +42,7 @@ function handleNavClick() {
     <div class="container-fluid">
       <!-- Logo -->
       <RouterLink class="navbar-brand d-flex align-items-center" to="/" @click="handleNavClick">
-        <img height="45" :src="logo" alt="Logo" class="drop-shadow" />
+        <img height="110" :src="logo" alt="Logo" class="logo drop-shadow" />
       </RouterLink>
 
       <!-- Hamburger Menu Button -->
@@ -52,29 +52,34 @@ function handleNavClick() {
       </button>
     </div>
 
-    <!-- Offcanvas Menu -->
-    <div class="offcanvas offcanvas-end bg-body" tabindex="-1" id="offcanvasNav"
-      ref="offcanvasRef" aria-labelledby="offcanvasNavLabel">
-      <div class="offcanvas-header">
-        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"
-          aria-label="Close"></button>
+  </nav>
+  <!-- Offcanvas Menu -->
+     <div class="offcanvas offcanvas-end bg-body" tabindex="-1" id="offcanvasNav"
+     ref="offcanvasRef" aria-labelledby="offcanvasNavLabel">
+     <div class="offcanvas-header">
+       <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"
+       aria-label="Close"></button>
       </div>
-
+      
       <div class="offcanvas-body d-flex flex-column justify-content-center">
         <ul class="navbar-nav gap-4">
           <li class="nav-item text-center" v-for="route in routes" :key="route.name">
             <RouterLink class="nav-link text-uppercase fs-5 fw-bold "
-              :to="route.path" @click="handleNavClick">
-              {{ route.meta?.pageConfig?.name || route.name }}
-            </RouterLink>
-          </li>
-        </ul>
-      </div>
+            :to="route.path" @click="handleNavClick">
+            {{ route.meta?.pageConfig?.name || route.name }}
+          </RouterLink>
+        </li>
+      </ul>
     </div>
-  </nav>
+  </div>
 </template>
 
 <style scoped lang="scss">
+.logo{
+  margin: -15px;
+}
+
+
 .navbar {
   z-index: 1030;
   transition: all .2s ease;
@@ -84,7 +89,8 @@ function handleNavClick() {
   filter: drop-shadow(2px 4px 6px rgba(0, 0, 0, 0.5));
 }
 
-.offcanvas {
-  width: 100% !important;
-}
+// .offcanvas {
+//   width: 100dvw !important;
+//   height: 100dvh;
+// }
 </style>

@@ -22,7 +22,7 @@ function changeLogoSource(){
 </script>
 
 <template>
-    <img class="position-absolute opacity-0 no-click" :src="animatedLogo" @load="changeLogoSource">
+    <img class="pre-load position-absolute opacity-0 no-click" :src="animatedLogo" @load="changeLogoSource">
     <DesktopNav :logo="logo" :routes />
 
     <MobileNav :logo="logo" :routes />
@@ -30,6 +30,11 @@ function changeLogoSource(){
 
 
 <style lang="scss">
+  .pre-load{
+    height: 1px;
+    width: 1px;
+  }
+
   .nav-link{
     line-height: 24px;
     font-weight: 500;
